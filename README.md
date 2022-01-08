@@ -1,2 +1,2 @@
-# jsal13.github.io
-James' personal website.
+# Blog.
+My personal blog.  Math & Data & Python & Sundary.
