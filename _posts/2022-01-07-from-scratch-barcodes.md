@@ -7,14 +7,13 @@ categories: from_scratch
 
 toc: true
 excerpt: From Scratch is a series where we see how things work by slowly building up to them with simple, basic examples or toy models.  This time, Barcodes.
-
 ---
 
   *From Scratch* is a series where we see how things work by slowly building up to them with simple, basic examples or toy models.
 
 ---
 
-## Introduction 
+## Introduction
 
 Any motivation we come up with to invent our own "toy" version of barcodes will seem somewhat artificial since the original problem that lead to their invention — needing to quickly scan some small part of a package to get price and inventory information — had many potential solutions, and barcodes were, for whatever reason, the solution that stuck around for a while.  It's kind of a strange solution but it's one that worked and sometimes that's all that's needed.
 
@@ -22,7 +21,7 @@ Any motivation we come up with to invent our own "toy" version of barcodes will 
 
 ## Xs and Os: A Strange and Terrible Encoding
 
-For the sake of simplicitly, let's say that we want to model a string of numbers that's made of 0s and 1s.  For example: 011101.  It would be easy to use binary here but let's make things a little weirder.  Let's make the following code with just Xs and Os.  
+For the sake of simplicitly, let's say that we want to model a string of numbers that's made of 0s and 1s.  For example: 011101.  It would be easy to use binary here but let's make things a little weirder.  Let's make the following code with just Xs and Os.
 
     0 = oooo
     1 = ooox
@@ -83,7 +82,7 @@ Let's see what 9414 looks like.
 
 ## What about real barcodes?
 
-This strange toy example is fairly close to the real thing.  
+This strange toy example is fairly close to the real thing.
 
 ![]({{ site.baseurl }}/images/barcode2.bmp "Sample Barcode")
 
@@ -94,7 +93,7 @@ In addition, we see that there is a "starting" set of bars (the two bars after t
 Here's a few other caveats:
 
 - There are many different types of barcodes which have many different encodings (i.e., the Xs and Os are in different places).
-- The encodings often have certain restrictions: they're made so that you won't get a whole lot of blank space or a whole lot of thick vertical lines.  On a real product, you shouldn't see something which corresponds to a 4-thick vertical line.  
+- The encodings often have certain restrictions: they're made so that you won't get a whole lot of blank space or a whole lot of thick vertical lines.  On a real product, you shouldn't see something which corresponds to a 4-thick vertical line.
 - The numbers on the bottom correspond 1-to-1 with the bars on top, with the exception of the first number on the left, and the start-middle-end bars.
 - Not all of the numbers are random: some may be checksums which check the validity of the barcode.
 
@@ -102,7 +101,7 @@ Here's a few other caveats:
 
 Not even close.  There's a ton of information out there on different barcodes, what those numbers mean, how long they should be, etc., and trying to do a high-level overview doesn't allow us to get into that kind of detail.
 
-One interesting thing to think about is: how much information can we represent with barcodes?  Could we represent entire books?  Could we represent website URLs?  Could we represent music?  Video?  
+One interesting thing to think about is: how much information can we represent with barcodes?  Could we represent entire books?  Could we represent website URLs?  Could we represent music?  Video?
 
 It's possible, but it's not going to be efficient if we stick to barcodes.  They're one-dimensional items that would need to be extremely long.  But what if we tried to extend this idea into two dimensions?  Hm.
 

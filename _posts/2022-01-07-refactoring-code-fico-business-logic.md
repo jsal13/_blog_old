@@ -3,7 +3,7 @@ title:  "Refactoring: Code with Business Logic"
 date:   2022-01-07 19:53:12 -0600
 
 description: Refactoring some gross sample code!
-categories: refactoring, python
+categories: refactoring python
 
 toc: true
 excerpt: Refactoring can be difficult and time-consuming, but it is absolutely necessary if one wants to maintain a clean codebase and have code which is easy to read, extend, scale, and share.
@@ -94,7 +94,7 @@ There's a lot to pick through, so we're going to list some things which aren't g
 - Repetition of similar code,
 - Functions / Classes which are doing many things at once,
 - "Magic Numbers" (numbers which are seemingly random in the code),
-- 
+-
 - No Type Hinting (very common in Python code, as type hinting is optional),
 - No Docstrings / Documentation.
 
@@ -152,7 +152,7 @@ def main(age, fico_score, is_previous_customer):
         prev_or_new_cust = "Previous Customer"
     else:
         prev_or_new_cust = "New Customer"
-    
+
     if fico_score < 580:
         credit_rating = "Deep-Subprime"
     if fico_score > 580 and fico_score <= 620:
@@ -163,7 +163,7 @@ def main(age, fico_score, is_previous_customer):
         credit_rating = "Prime"
     if fico_score >= 720:
         credit_rating = "Super Prime"
-    
+
     customer_label = "{customer_age_label}: {credit_rating} ({prev_or_new_cust})".format(**{
         'customer_age_label': customer_age_label,
         'credit_rating': credit_rating,
@@ -207,7 +207,7 @@ def main(age: str, fico_score: str, is_previous_customer: str) -> str:
     minor_or_adult = customer_age_label(age)
     credit_rating = credit_rating_label(fico_score)
     prev_or_new_cust = previous_customer_label(is_previous_customer)
-    
+
     customer_label = "{minor_or_adult}: {credit_rating} ({prev_or_new_cust})".format(**{
         'minor_or_adult': minor_or_adult,
         'credit_rating': credit_rating,
@@ -221,7 +221,7 @@ In Python, type hints are not required (nor are they checked unless you have [my
 
 ## Magic Numbers
 
-Magic Numbers are numbers in code which are meaningful but perhaps not obviously so.  These often should be replaced with constants with a meaningful name which tells us what the magic number means.  
+Magic Numbers are numbers in code which are meaningful but perhaps not obviously so.  These often should be replaced with constants with a meaningful name which tells us what the magic number means.
 
 In this code, we have the FICO score bounds. Luckily, these are bins and we can do a standard bin structure with an ``for``-loop, but there are many other equally nice ways to do this construction. Let's see one of them:
 
@@ -255,7 +255,7 @@ def main(age: int, fico_score: int, is_previous_customer: bool) -> str:
     minor_or_adult = customer_age_label(age)
     credit_rating = credit_rating_label(fico_score)
     prev_or_new_cust = previous_customer_label(is_previous_customer)
-    
+
     customer_label = "{minor_or_adult}: {credit_rating} ({prev_or_new_cust})".format(**{
         'minor_or_adult': minor_or_adult,
         'credit_rating': credit_rating,
@@ -320,7 +320,7 @@ class CustomerLabel:
                 return lbl
 
         # TODO: Put a LOG here to make it known that a label was not returned correctly!
-        return ""                
+        return ""
 
     def previous_customer_label(self) -> str:
         return "Previous Customer" if self.is_previous_customer else "New Customer"
