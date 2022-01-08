@@ -1,11 +1,11 @@
 ---
 title:  "Refactoring: Code with Business Logic"
 date:   2022-01-07 19:53:12 -0600
-layout: single
 
 description: Refactoring some gross sample code!
 categories: refactoring, python
 
+toc: true
 excerpt: Refactoring can be difficult and time-consuming, but it is absolutely necessary if one wants to maintain a clean codebase and have code which is easy to read, extend, scale, and share.
 ---
 

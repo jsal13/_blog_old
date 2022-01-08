@@ -1,11 +1,11 @@
 ---
 title:  "From Scratch: Barcodes"
 date:   2022-01-07 19:53:12 -0600
-layout: single
 
 description: Building up intuition for Barcodes.
 categories: from_scratch
 
+toc: true
 excerpt: From Scratch is a series where we see how things work by slowly building up to them with simple, basic examples or toy models.  This time, Barcodes.
 
 ---
