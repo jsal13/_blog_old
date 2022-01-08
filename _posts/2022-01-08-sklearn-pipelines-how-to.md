@@ -36,12 +36,7 @@ from sklearn.pipeline import Pipeline
 
 
 ```python
-# For mypy users, as of 2022-01-08, seaborn does not use typing.
-# We have to wrap the load in `pd.DataFrame` to make mypy
-# understand that it is a dataframe.`
-# See: https://github.com/mwaskom/seaborn/issues/2212
-
-df = pd.DataFrame(sns.load_dataset("penguins"))  # type: ignore
+df = sns.load_dataset("penguins")  # type: ignore
 ```
 
 Great, let's do some quick EDA to see what we're working with.
