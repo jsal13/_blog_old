@@ -36,7 +36,7 @@ from sklearn.pipeline import Pipeline
 
 
 ```python
-df = sns.load_dataset("penguins")  # type: ignore
+df = sns.load_dataset("penguins")
 ```
 
 Great, let's do some quick EDA to see what we're working with.
