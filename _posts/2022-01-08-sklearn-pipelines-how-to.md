@@ -18,8 +18,6 @@ Sklearn's [pipelines](https://scikit-learn.org/stable/modules/generated/sklearn.
 
 Let's import all the libraries we're working with (don't worry if you don't know what some of these do, we'll get to it!) and get some toy data to work with.  We'll be working with the cute [Penguins](https://github.com/allisonhorst/palmerpenguins) dataset which ``seaborn`` can load.
 
-**Note that I will be emphasizing type hints and style quite a bit!**
-
 **Goal**: We'll try to predict the sex, given the rest of the features.
 
 

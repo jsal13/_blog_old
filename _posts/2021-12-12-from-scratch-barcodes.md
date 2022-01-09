@@ -1,6 +1,6 @@
 ---
 title:  "From Scratch: Barcodes"
-date:   2022-01-07 19:53:12 -0600
+date:   2021-12-12
 
 description: Building up intuition for Barcodes.
 categories: from_scratch

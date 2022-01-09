@@ -1,6 +1,6 @@
 ---
 title:  "Refactoring: Code with Business Logic"
-date:   2022-01-07 19:53:12 -0600
+date:   2021-11-23
 
 description: Refactoring some gross sample code!
 categories: refactoring python
