@@ -7,10 +7,10 @@ categories: from_scratch
 
 toc: true
 excerpt: From Scratch is a series where we see how things work by slowly building up to them with simple, basic examples or toy models.  This time, Barcodes.
----
 
-  *From Scratch* is a series where we see how things work by slowly building up to them with simple, basic examples or toy models.
-
+header:
+  overlay_filter: rgba(0, 146, 202, 0.8)
+  overlay_image: /images/title_barcode.bmp
 ---
 
 ## Introduction

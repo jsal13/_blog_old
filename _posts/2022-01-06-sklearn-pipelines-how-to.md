@@ -1,6 +1,6 @@
 ---
 title:  "Making Your Data Flow With Sklearn Pipelines"
-date:   2022-01-08
+date:   2022-01-06
 
 description: The basics of Sklearn pipelines.
 categories: python sklearn datascience data
@@ -8,6 +8,12 @@ categories: python sklearn datascience data
 excerpt: Sklearn's [pipelines](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) are an elegant way to organize your modeling workflow.  It also provides an "at-a-glance" picture of what is going into the current model &mdash; something your future self will thank you for when you read that notebook back in six months.
 
 classes: wide
+
+header:
+  overlay_filter: rgba(0, 146, 202, 0.8)
+  overlay_image: /images/title_pipeline.jpg
+  caption: "Photo Credit: [**GordonJ86**](https://commons.wikimedia.org/wiki/File:Orange_and_Yellow_HDPE_Pipe.jpg)"
+
 ---
 
 ## Introduction

@@ -7,6 +7,10 @@ categories: refactoring python
 
 toc: true
 excerpt: Refactoring can be difficult and time-consuming, but it is absolutely necessary if one wants to maintain a clean codebase and have code which is easy to read, extend, scale, and share.
+
+header:
+  overlay_filter: rgba(0, 146, 202, 0.8)
+  overlay_image: /images/title_knot.bmp
 ---
 
 ## Introduction

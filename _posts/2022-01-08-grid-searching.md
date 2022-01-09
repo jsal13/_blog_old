@@ -5,9 +5,14 @@ date:   2022-01-08
 description: The basics of Sklearn grid searching.
 categories: python sklearn datascience data
 
-excerpt: There are many different models to choose from in ``sklean`` to model your data with.  There are many parameters and hyper-parameters related to these models.  How can you find the best ones for your data?
+excerpt: There are many different models to choose from in sklean to model your data with.  There are many parameters and hyper-parameters related to these models.  How can you find the best ones for your data?
 
 classes: wide
+
+header:
+  overlay_filter: rgba(0, 146, 202, 0.8)
+  overlay_image: /images/title_grid.png
+  caption: "Photo Credit: [**Wikipedia**](https://commons.wikimedia.org/wiki/File:Log_paper.svg)"
 ---
 
 ## Introduction
@@ -41,7 +46,7 @@ If you were posed this question and you didn't know a whole lot about the ``skle
 
 That's pretty much hitting the nail on the head. Instead of doing ugly ``for``-loops some number of times (potentially indenting past what your monitor can show!), ``sklean`` has ``GridSearchCV``.
 
-Let's give an example, then chat about it.  If you've not read about [Pipelines](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html), check out [this post](/2021-01-08-sklearn-pipelines-how-to.html).
+Let's give an example, then chat about it.  If you've not read about [Pipelines](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html), check out [this post](/blog/2021-01-06-sklearn-pipelines-how-to.html).
 
 
 ```python
