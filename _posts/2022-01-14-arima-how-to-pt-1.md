@@ -152,18 +152,17 @@ You can click on each of the variables in the legend above to show off that plot
 
 ``data_1`` is quite regular: it repeats in a predictable pattern.  This is **seasonality**: the presence of variations that occur at specific regular intervals.
 
-``data_2`` shows something which is similar, but not quite the same: it's rising in a predictable way, but the data is not predictable in the same way as ``data_1``.  This is a behavior which has similar variations as seasonality, but does _not_ occur at regular intervals.  The stock market is a good example of this: there are rises and falls, but we cannot predict (in the long term) when either will happen.
+``data_2`` shows something which is similar, but not quite the same: it's rising in a predictable way, but the data is not predictable in the same way as ``data_1``.  This is a behavior which has similar variations as seasonality, but does _not_ occur at regular intervals &mdash; we call behavior like this a **trend**.  The a stock's hourly or daily prices are a good example of a timeseries with a trend: there are rises and falls, but we cannot predict (in the long term) when either will happen.
 
 ``data_3`` shows neither pattern: we see neither trends nor seasonality.  We will call such a timeseries **stationary**: it shows neither seasonality nor trends.  Think of white-noise here.
 
-Take a look at [the plot in this chapter](https://otexts.com/fpp3/stationarity.html) and try to guess which are seasonal, which have trends, and which are stationary.  The answers are below the figures.  It's tricky sometimes!
-
+Take a look at [the plot in this chapter](https://otexts.com/fpp3/stationarity.html) and try to guess which are seasonal, which have trends, and which are stationary.  The answers are below the figures.  It's tricky!
 
 ## How to Make a Timeseries Stationary
 
 There are some cool things we can do if we know that a timeseries is stationary.  We'll see this in a little bit but, for a second, let's talk about one of the most popular ways to make a (general) timeseries stationary.
 
-Suppose we have some point ``y_t`` in our timeseries, and we look at `y_t+1`.  What could happen?  The value could have gone up, gone down, or stayed the same.  This feels like a pretty benign observation, but it turns out that it's quite useful to have a feature like this.  We call this ``1-diff``-ing, taking the difference between successive points to see an approximate "rate-of-change" in our graph.  Let's look at our plots from above with this 1-diff.
+Suppose we have some point ``y_t`` in our timeseries, and we look at `y_t+1`.  What could happen?  The value could have gone up, gone down, or stayed the same.  This feels like a pretty benign observation, but it turns out that it's quite useful to have a feature like this.  We call this ``1-diff``-ing, taking the difference between successive points to see a rate-of-change in our timeseries.  Let's look at our plots from above with 1-diff applied.
 
 
 
@@ -246,19 +245,17 @@ Looking at ``data_1`` and ``data_1__1_diff`` we don't see a huge change.  It's s
 
 ``data_3__1_diff`` is also stationary, but because ``data_3`` was also stationary perhaps this isn't so surprising.
 
-On real timeseries data, this method of making a "stationary feature" for your timeseries is quite effective.  It is also effective to take 2-diffs if a 1-diff has not made the data stationary enough.  Note that some series may be resiliant: they may not become stationary easily, as we saw above in our ``data_1`` example.  Nevertheless, many real-world timeseries will.
+On real timeseries data, this method of making a "stationary feature" for your timeseries is quite effective.  It is also effective to take 2-diffs if a 1-diff has not made the data stationary enough.  Note that some series may be resiliant: they may not become stationary easily, as we saw above in our ``data_1`` example.  Nevertheless, this works for many real-world timeseries.
 
 (Recall from the introduction that the reverse of this process is called _Integration_, which is the _I_ part of _ARIMA_.)
 
 ## Autoregression: Looking to the past to predict the future.
 
-One thing we can do with stationary models is th use **autoregression** on them.  Note that we _can_ use autoregression on any time series, but we will find it most useful at present to restrict ourselves to stationary timeseries.
-
-An **autoregressive model** for a timeseries creates a linear combination of _past values_ and constant coefficients to calculate the current value.  In math, for a **p-autoregressive model**,
+An **autoregressive model** for a timeseries is a linear combination of _past values_ and constant coefficients to calculate the current value.  In math terms, for a **p-autoregressive model**,
 
 $$y_t = c_{1}y_{t-1} + c_{2}y_{t-2} + \cdots + c_{p}y_{t-p}$$
 
-Notice here that the ``c_{i}`` stay constant, but for each ``y_t`` we cycle through the previous _p_ values and multiply them by the associated constants.  We will refer to _p_-autoregressions as ``AR(p)``.
+We will refer to _p_-autoregressions as ``AR(p)``.
 
 Let's do an example of this, using ``data_3`` from above.
 
@@ -337,13 +334,15 @@ plot_in_altair(df).interactive()
 
 
 
-Notice that as we get higher and higher in _p_, we get a better and better estimate of our plot.  This makes sense, since we're using more past data to predict a current value.  The downside is: we lose a lot of data at the beginning, since we don't have enough points to estimate things.  Compare ``AR(01)`` and ``AR(25)`` in the above plot.
+Notice that as we get larger values of _p_, we get a better estimate of our timeseries.  This makes sense, since we're using more past data to predict a current value.  The downside is: we lose a lot of data at the beginning, since we don't have enough points to "look back on" and calculate our regression.  Compare ``AR(01)`` and ``AR(25)`` in the above plot.
 
-What do we gain by doing this?  Recall that an autoregression takes in some past values and predicts a current value: we can use this type of model to perform regression-type analysis on our timeseries, just as we would do if we had a regression on non-timeseries data.  Powerful!
+What do we gain by doing an autoregression?  Recall that an autoregression takes in some past values and predicts a current value: we can use this type of model to perform regression-type analysis on our timeseries, just as we would do if we had a regression on non-timeseries data.  Powerful!
 
 ## Moving Averages
 
-Moving averages in timeseries take certain windows of observations and take some sort of average of them.  For example, a moving average with a window size of 5 taking a mean will look at 5 observations, take the mean of those, then shift up one timestep and do the same thing.  Pandas makes this easy to do:
+Moving averages in timeseries take certain windows of observations and take an average of them.  For example, a moving average with a window size of 5 taking a mean will look at 5 observations, take the mean of those observations, then shift up one timestep and do the same thing.  Plotting those means gives us the moving average of our timeseries.
+
+Pandas makes this straight-forward:
 
 
 ```python
@@ -432,11 +431,11 @@ We follow the literature and say ``ARIMA(p,d,q)`` to mean an ARIMA model with
 - ``d`` is the degree of diff-ing (``d``-diff in our notation),
 - ``q`` is the order of the moving average part (the window size),
 
-With these, check out the (Table 9.1 in this chapter)[https://otexts.com/fpp3/non-seasonal-arima.html], notice the special cases.  Make sure you can reason out why these particular values create the associated result.
+With these, check out the [Table 9.1 in this chapter](https://otexts.com/fpp3/non-seasonal-arima.html), notice the special cases.  Make sure you can reason out why these particular values create the associated result.
 
 For example, taking ``ARIMA(0, 1, 0)`` should result in a random walk.  Why?  Let's look.  We are using no autoregression or moving averages, but we are taking a 1-diff.  As we saw above, this is a way to make our model stationary (similar to white-noise) which is essentially a random walk.
 
-As usual, Python makes it dead-easy to do ARIMA on our timeseries, as we see below.
+As usual, Python makes it dead-easy to do ARIMA on our timeseries, as we see below.  (Ignore the warning for now...)
 
 
 ```python
