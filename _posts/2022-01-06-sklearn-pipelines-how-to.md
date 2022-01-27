@@ -13,7 +13,6 @@ header:
   overlay_filter: rgba(0, 146, 202, 0.8)
   overlay_image: /images/title_pipeline.jpg
   caption: "Photo Credit: [**GordonJ86**](https://commons.wikimedia.org/wiki/File:Orange_and_Yellow_HDPE_Pipe.jpg)"
-
 ---
 
 ## Introduction

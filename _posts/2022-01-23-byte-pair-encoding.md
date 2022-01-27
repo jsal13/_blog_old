@@ -14,7 +14,6 @@ header:
   overlay_image: /images/title_compression_spring.jpg
   caption: "Photo Credit: [**Jean-Jacques Milan**](https://commons.wikimedia.org/wiki/File:Ressort_de_compression.jpg#metadata)"
 ---
-
 ## Introduction
 
 While going over some Natural Language Processing topics, I stumbled on the _byte pair encoding_ algorithm.  I thought that, given its usefulness in a number of NLP applications, that it'd be fairly complex and quite difficult to understand &mdash; but it turns out that it's pretty straight-forward!  Let's look into it a bit and give some examples.  First, our imports.
