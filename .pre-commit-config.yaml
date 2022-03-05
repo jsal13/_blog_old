@@ -10,3 +10,12 @@ repos:
     rev: 6.1.1  # pick a git hash / tag to point to
     hooks:
     -   id: pydocstyle
+-   repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.3.0
+    hooks:
+    -   id: nbqa-black
+        additional_dependencies: [black]
+    -   id: nbqa-isort
+        additional_dependencies: [isort]
+    -   id: nbqa-flake8
+        additional_dependencies: [flake8]
