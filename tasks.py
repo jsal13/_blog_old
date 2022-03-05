@@ -4,9 +4,27 @@ Notes:  Type-Hinting is not able to be used until
 https://github.com/pyinvoke/invoke/issues/357 is closed.
 """
 
+import datetime
 import os
 
 from invoke import task
+
+
+@task
+def nb2md(context, nb_name=None):  # type: ignore
+    """
+    Take notebook and make post md.
+
+    `nb_name` is the name of the notebook with no suffix.
+    """
+    dt = str(datetime.date.today())
+    cmd = (
+        f"jupyter nbconvert --to markdown "
+        f"./_notebooks/{nb_name}.ipynb "  # type: ignore
+        f"--output ../_posts/{dt}-{nb_name}.md"
+    )
+    print(cmd)
+    context.run(cmd)
 
 
 @task

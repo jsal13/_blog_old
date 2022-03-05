@@ -19,5 +19,6 @@
     "python.sortImports.args": [
         "--profile",
         "black"
-    ]
+    ],
+    "python.formatting.provider": "black"
 }
