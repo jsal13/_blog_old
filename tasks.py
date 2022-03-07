@@ -38,7 +38,7 @@ def nb2md(context, nb_name=None):  # type: ignore
         f_raw_md = f.read()
 
     nb_asset_pattern = r"!\[\]\(../(assets/images/.*?)\)"
-    md_asset_pattern = r"!\[\]\({{site.baseurl}}/\1\)"
+    md_asset_pattern = r"![]({{site.baseurl}}/\1)"
     print(f"All asset replacements: {re.findall(nb_asset_pattern, f_raw_md)}")
     f_raw_md = re.sub(nb_asset_pattern, md_asset_pattern, f_raw_md)
 
