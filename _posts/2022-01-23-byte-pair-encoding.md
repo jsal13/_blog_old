@@ -11,7 +11,7 @@ classes: wide
 
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
-  overlay_image: /images/title_compression_spring.jpg
+  overlay_image: /assets/images/title_compression_spring.jpg
   caption: "Photo Credit: [**Jean-Jacques Milan**](https://commons.wikimedia.org/wiki/File:Ressort_de_compression.jpg#metadata)"
 ---
 ## Introduction

@@ -11,7 +11,7 @@ classes: wide
 
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
-  overlay_image: /images/title_altair_high_low_plot.png
+  overlay_image: /assets/images/title_altair_high_low_plot.png
 ---
 ## Introduction
 

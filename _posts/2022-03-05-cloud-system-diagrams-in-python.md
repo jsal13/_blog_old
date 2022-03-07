@@ -11,7 +11,7 @@ classes: wide
 
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
-  overlay_image: /images/arch_diagrams/2_tilted.png
+  overlay_image: /assets/images/arch_diagrams/2_tilted.png
 ---
 ## Introduction
 
@@ -21,7 +21,7 @@ Let's import all the stuff we'll need, then do a little example.
 
 
 ```python
-from diagrams import Diagram, Edge, Cluster
+from diagrams import Cluster, Diagram, Edge
 from diagrams.aws.compute import EC2
 from diagrams.aws.database import RDS, Redshift
 from diagrams.aws.network import ELB
@@ -30,9 +30,9 @@ from diagrams.aws.network import ELB
 
 ```python
 # Create the diagram via the following context:
-filename_1 = "../images/arch_diagrams/1"
-with Diagram("Name_of_Service", show=False, filename=filename_1):
-    elb_1 = ELB("The Label") 
+FILENAME_1 = "../assets/images/arch_diagrams/1"
+with Diagram("Name_of_Service", show=False, filename=FILENAME_1):
+    elb_1 = ELB("The Label")
     ec2_1 = EC2("Another Label")
     rds_1 = RDS("User Label")
 
@@ -40,9 +40,10 @@ with Diagram("Name_of_Service", show=False, filename=filename_1):
     ec2_1 >> rds_1
 ```
 
-![](../images/arch_diagrams/1.png)
+![](/assets/images/arch_diagrams/1.png)
+![](../assets/images/arch_diagrams/1.png)
 
-Note that you don't _have_ to make these variables.  You can do the same thing with 
+Note that you don't _have_ to make these variables.  You can do the same thing with
 
 ```python
     ELB("The Label") >> EC2("Another Label") >> RDS("User Label")
@@ -52,8 +53,8 @@ but I prefer to break it up a bit.  We can also group a number of these together
 
 
 ```python
-filename_2 = "../images/arch_diagrams/2"
-with Diagram("Grouped_Stuff", show=False, filename=filename_2):
+FILENAME_2 = "../assets/images/arch_diagrams/2"
+with Diagram("Grouped_Stuff", show=False, filename=FILENAME_2):
     # All of the things we'll use.
     # Notice we are making a list for the EC2 instances.
     elb_1 = ELB("lb1")
@@ -62,22 +63,17 @@ with Diagram("Grouped_Stuff", show=False, filename=filename_2):
 
     # Configure the layout...
     elb_1 >> ec2_list >> rds_1
-
 ```
 
-![](../images/arch_diagrams/2.png)
+![](../assets/images/arch_diagrams/2.png)
+![](/assets/images/arch_diagrams/2.png)
 
 Notice this is a bit...tall.  Maybe we'd prefer to have it rotated.  We can do this with the `direction` parameter, like so:
 
 
 ```python
-filename_3 = "../images/arch_diagrams/2_tilted"
-with Diagram(
-    "Grouped_Stuff", 
-    show=False, 
-    filename=filename_3,
-    direction="TB"
-):
+FILENAME_3 = "../assets/images/arch_diagrams/2_tilted"
+with Diagram("Grouped_Stuff", show=False, filename=FILENAME_3, direction="TB"):
     # All of the things we'll use.
     # Notice we are making a list for the EC2 instances.
     elb_1 = ELB("lb1")
@@ -88,28 +84,30 @@ with Diagram(
     elb_1 >> ec2_list >> rds_1
 ```
 
-![](../images/arch_diagrams/2_tilted.png)
+![](../assets/images/arch_diagrams/2_tilted.png)
+![](/assets/images/arch_diagrams/2_tilted.png)
 
 We can do a few other cute things.  We can change the color of the edges and put a label on them fairly easily!
 
 
 ```python
-filename_4 = "../images/arch_diagrams/4"
-with Diagram("Labeled Edges", show=False, filename=filename_4):
+FILENAME_4 = "../assets/images/arch_diagrams/4"
+with Diagram("Labeled Edges", show=False, filename=FILENAME_4):
     ec2 = EC2("Compute")
     rds = RDS("Store")
 
     (ec2 >> Edge(label="Put results in", color="red") >> rds)
 ```
 
-![](../images/arch_diagrams/4.png)
+![](../assets/images/arch_diagrams/4.png)
+![](/assets/images/arch_diagrams/4.png)
 
 Additionally, we can group together services.  Let's see how!
 
 
 ```python
-filename_5 = "../images/arch_diagrams/5"
-with Diagram("Containers", show=False, filename=filename_5):
+FILENAME_5 = "../assets/images/arch_diagrams/5"
+with Diagram("Containers", show=False, filename=FILENAME_5):
     ec2 = EC2("Computer Thing")
 
     # Make a cluster (a grouped set of elements).
@@ -124,9 +122,9 @@ with Diagram("Containers", show=False, filename=filename_5):
         db_cluster = [rds, rs]
 
     db_cluster >> ec2
-
 ```
 
-![](../images/arch_diagrams/5.png)
+![](../assets/images/arch_diagrams/5.png)
+![](/assets/images/arch_diagrams/5.png)
 
 You can also nest clusters and make some pretty diagrams!  Check out the [docs](https://diagrams.mingrammer.com/docs/getting-started/installation) for more stuff that you can do with this package!

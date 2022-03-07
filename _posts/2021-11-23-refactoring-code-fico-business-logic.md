@@ -10,7 +10,7 @@ excerpt: Refactoring can be difficult and time-consuming, but it is absolutely n
 
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
-  overlay_image: /images/title_knot.bmp
+  overlay_image: /assets/images/title_knot.bmp
 ---
 
 ## Introduction

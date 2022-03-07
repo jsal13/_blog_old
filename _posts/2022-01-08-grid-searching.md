@@ -11,7 +11,7 @@ classes: wide
 
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
-  overlay_image: /images/title_grid.png
+  overlay_image: /assets/images/title_grid.png
   caption: "Photo Credit: [**Wikipedia**](https://commons.wikimedia.org/wiki/File:Log_paper.svg)"
 ---
 ## Introduction

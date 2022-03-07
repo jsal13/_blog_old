@@ -10,7 +10,7 @@ excerpt: From Scratch is a series where we see how things work by slowly buildin
 
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
-  overlay_image: /images/title_barcode.bmp
+  overlay_image: /assets/images/title_barcode.bmp
 ---
 
 ## Introduction
@@ -84,7 +84,7 @@ Let's see what 9414 looks like.
 
 This strange toy example is fairly close to the real thing.
 
-![]({{ site.baseurl }}/images/barcode2.bmp "Sample Barcode")
+![]({{ site.baseurl }}/assets/images/barcode2.bmp "Sample Barcode")
 
 Looking at this real barcode, you'll see some of the things we've done — sort of. These have the numbers they represent below them (not justified in the same way we had them, but they're there) and if you look at the left-hand side you'll see that each number (besides the 5 on the "outside") corresponds to a different set of four vertical lines and spaces.  You'll also notice that a number on the left won't have the same bars as a number on the right (for example, the 4 is different in this figure) — that is because *on many barcode types the left and right side have inverted bars-and-spaces*.  That is, if 4 on the left were something like xxox the 4 on the right would be ooxo.  Wild.
 
@@ -105,4 +105,4 @@ One interesting thing to think about is: how much information can we represent w
 
 It's possible, but it's not going to be efficient if we stick to barcodes.  They're one-dimensional items that would need to be extremely long.  But what if we tried to extend this idea into two dimensions?  Hm.
 
-![]({{ site.baseurl }}/images/qr.png "QR Code")
+![]({{ site.baseurl }}/assets/images/qr.png "QR Code")

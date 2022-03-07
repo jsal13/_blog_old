@@ -4,8 +4,8 @@ Notes:  Type-Hinting is not able to be used until
 https://github.com/pyinvoke/invoke/issues/357 is closed.
 """
 
-import datetime
 import os
+import re
 
 from invoke import task
 
@@ -17,10 +17,14 @@ def nb2md(context, nb_name=None):  # type: ignore
 
     `nb_name` is the name of the notebook with no suffix.
     """
-    dt = str(datetime.date.today())
+    nb_path: str = f"./_notebooks/{nb_name}.ipynb"
+
+    with open(nb_path, "r", encoding="utf-8") as f:
+        f_raw = f.read()
+
+    dt = re.findall(r"date:.*?(\d{4}-\d{2}-\d{2})", f_raw)[0]
     cmd = (
-        f"jupyter nbconvert --to markdown "
-        f"./_notebooks/{nb_name}.ipynb "  # type: ignore
+        f"jupyter nbconvert --to markdown {nb_path} "
         f"--output ../_posts/{dt}-{nb_name}.md"
     )
     print(cmd)

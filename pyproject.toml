@@ -222,3 +222,13 @@ profile = "black"
 [pydocstyle]
 inherit = false
 # ignore = D100
+
+#==========================================
+# NBQA
+# > For notebook linting and styling.
+# > https://nbqa.readthedocs.io/en/latest/configuration.html#configuration
+# =========================================
+[tool.nbqa.addopts]
+flake8 = [
+    "--extend-ignore=E402",  # module level import not at top of file; can't do this in jupyter for these posts.
+]

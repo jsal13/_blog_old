@@ -11,7 +11,7 @@ classes: wide
 
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
-  overlay_image: /images/title_stock.png
+  overlay_image: /assets/images/title_stock.png
   caption: "Photo Credit: [**Yahoo Finance**](https://finance.yahoo.com/)"
 ---
 ## Introduction
