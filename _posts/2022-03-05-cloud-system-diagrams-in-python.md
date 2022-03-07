@@ -25,13 +25,19 @@ from diagrams import Cluster, Diagram, Edge
 from diagrams.aws.compute import EC2
 from diagrams.aws.database import RDS, Redshift
 from diagrams.aws.network import ELB
+
+# Standard graphviz graph attibutes to pass.
+GRAPH_ATTRS = {
+    "fontsize": "45",
+    "bgcolor": "transparent"
+}
 ```
 
 
 ```python
 # Create the diagram via the following context:
 FILENAME_1 = "../assets/images/arch_diagrams/1"
-with Diagram("Name_of_Service", show=False, filename=FILENAME_1):
+with Diagram("Name_of_Service", show=False, filename=FILENAME_1, graph_attr=GRAPH_ATTRS):
     elb_1 = ELB("The Label")
     ec2_1 = EC2("Another Label")
     rds_1 = RDS("User Label")
@@ -53,7 +59,7 @@ but I prefer to break it up a bit.  We can also group a number of these together
 
 ```python
 FILENAME_2 = "../assets/images/arch_diagrams/2"
-with Diagram("Grouped_Stuff", show=False, filename=FILENAME_2):
+with Diagram("Grouped_Stuff", show=False, filename=FILENAME_2, graph_attr=GRAPH_ATTRS):
     # All of the things we'll use.
     # Notice we are making a list for the EC2 instances.
     elb_1 = ELB("lb1")
@@ -71,7 +77,7 @@ Notice this is a bit...tall.  Maybe we'd prefer to have it rotated.  We can do t
 
 ```python
 FILENAME_3 = "../assets/images/arch_diagrams/2_tilted"
-with Diagram("Grouped_Stuff", show=False, filename=FILENAME_3, direction="TB"):
+with Diagram("Grouped_Stuff", show=False, filename=FILENAME_3, direction="TB", graph_attr=GRAPH_ATTRS):
     # All of the things we'll use.
     # Notice we are making a list for the EC2 instances.
     elb_1 = ELB("lb1")
@@ -89,7 +95,7 @@ We can do a few other cute things.  We can change the color of the edges and put
 
 ```python
 FILENAME_4 = "../assets/images/arch_diagrams/4"
-with Diagram("Labeled Edges", show=False, filename=FILENAME_4):
+with Diagram("Labeled Edges", show=False, filename=FILENAME_4, graph_attr=GRAPH_ATTRS):
     ec2 = EC2("Compute")
     rds = RDS("Store")
 
@@ -103,7 +109,7 @@ Additionally, we can group together services.  Let's see how!
 
 ```python
 FILENAME_5 = "../assets/images/arch_diagrams/5"
-with Diagram("Containers", show=False, filename=FILENAME_5):
+with Diagram("Containers", show=False, filename=FILENAME_5, graph_attr=GRAPH_ATTRS):
     ec2 = EC2("Computer Thing")
 
     # Make a cluster (a grouped set of elements).
