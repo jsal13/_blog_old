@@ -40,8 +40,7 @@ with Diagram("Name_of_Service", show=False, filename=FILENAME_1):
     ec2_1 >> rds_1
 ```
 
-![](/assets/images/arch_diagrams/1.png)
-![](../assets/images/arch_diagrams/1.png)
+{{site.baseurl}}/assets/images/arch_diagrams/1.png
 
 Note that you don't _have_ to make these variables.  You can do the same thing with
 
@@ -65,8 +64,7 @@ with Diagram("Grouped_Stuff", show=False, filename=FILENAME_2):
     elb_1 >> ec2_list >> rds_1
 ```
 
-![](../assets/images/arch_diagrams/2.png)
-![](/assets/images/arch_diagrams/2.png)
+{{site.baseurl}}/assets/images/arch_diagrams/2.png
 
 Notice this is a bit...tall.  Maybe we'd prefer to have it rotated.  We can do this with the `direction` parameter, like so:
 
@@ -84,8 +82,7 @@ with Diagram("Grouped_Stuff", show=False, filename=FILENAME_3, direction="TB"):
     elb_1 >> ec2_list >> rds_1
 ```
 
-![](../assets/images/arch_diagrams/2_tilted.png)
-![](/assets/images/arch_diagrams/2_tilted.png)
+{{site.baseurl}}/assets/images/arch_diagrams/2_tilted.png
 
 We can do a few other cute things.  We can change the color of the edges and put a label on them fairly easily!
 
@@ -99,8 +96,7 @@ with Diagram("Labeled Edges", show=False, filename=FILENAME_4):
     (ec2 >> Edge(label="Put results in", color="red") >> rds)
 ```
 
-![](../assets/images/arch_diagrams/4.png)
-![](/assets/images/arch_diagrams/4.png)
+{{site.baseurl}}/assets/images/arch_diagrams/4.png
 
 Additionally, we can group together services.  Let's see how!
 
@@ -124,7 +120,6 @@ with Diagram("Containers", show=False, filename=FILENAME_5):
     db_cluster >> ec2
 ```
 
-![](../assets/images/arch_diagrams/5.png)
-![](/assets/images/arch_diagrams/5.png)
+{{site.baseurl}}/assets/images/arch_diagrams/5.png
 
 You can also nest clusters and make some pretty diagrams!  Check out the [docs](https://diagrams.mingrammer.com/docs/getting-started/installation) for more stuff that you can do with this package!
