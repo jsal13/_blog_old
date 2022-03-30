@@ -74,6 +74,12 @@ def tox(context):  # type: ignore
     context.run("tox")
 
 
+@task
+def serve(context):  # type: ignore
+    """Serve Jekyll page locally."""
+    context.run("bundle exec jekyll serve")
+
+
 @task(pre=[install_precommit])
 def init(_context):  # type: ignore
     """Init the repository.
