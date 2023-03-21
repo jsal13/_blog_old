@@ -1,3 +1,4 @@
+# Ruby Stuff.
 _site
 .sass-cache
 .jekyll-cache
@@ -8,6 +9,8 @@ poetry.lock
 mlruns
 artifact_root
 *.db
+
+poetry.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,3 +1,5 @@
 [flake8]
-max-line-length = 88
-extend-ignore = E203  # Remove whitespace before :, conflicts with Black.
+max-line-length = 90
+extend-ignore = 
+    # Remove whitespace before :, conflicts with Black.
+    E203  

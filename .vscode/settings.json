@@ -10,7 +10,7 @@
     "python.linting.pylintEnabled": true,
     "[python]": {
         "editor.rulers": [
-            88
+            90
         ],
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
@@ -19,6 +19,5 @@
     "python.sortImports.args": [
         "--profile",
         "black"
-    ],
-    "python.formatting.provider": "black"
+    ]
 }

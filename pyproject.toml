@@ -1,85 +1,99 @@
 [tool.poetry]
-name = "blog"
-version = "0.1.0"
-description = ""
-authors = ["James Salvatore <jimmy.c.salvatore@gmail.com>"]
-license = "MIT"
+name = 'blog'
+version = '0.1.0'
+description = ''
+authors = ['Jamnes Salvatore <jimmy.c.salvatore@gmail.com>']
+license = "LICENSE"
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
-numpy = "^1.21.5"
-pandas = "^1.3.5"
-altair = "^4.1.0"
-matplotlib = "^3.5.1"
-seaborn = "^0.11.2"
-statsmodels = "^0.13.1"
-openpyxl = "^3.0.9"
-sklearn = "^0.0"
-mlflow = "^1.22.0"
-diagrams = "^0.21.1"
-nbqa = "^1.3.0"
+python = ">=3.10,<3.11"
+altair = "^4.2"
+fastapi = "^0.87"
+httpx = "^0.23"
+matplotlib = "^3.6"
+numpy = "^1.3"
+pandas = "^1.5"
+requests = "^2.28"
+uvicorn = "^0.20"
+hypothesis = "^6.70.0"
 
 [tool.poetry.dev-dependencies]
-black = "^21.12b0"
-flake8 = "^4.0.1"
+autopep8 = "^2.0"
+black = {extras = ["jupyter"], version = "^22.10"}
+flake8 = "^6.0"
+flake8-bugbear = "^22.10"
+hypothesis = "^6.58"
+ipykernel = "^6.7"
+isort = "^5.10"
+jupyter = "^1.0"
+jupyter-contrib-nbextensions = "^0.7"
 mypy = "^0.930"
-pre-commit = "^2.16.0"
-pydantic = "^1.8.2"
-pylint = "^2.12.2"
-pytest = "^6.2.5"
-pytest-cov = "^3.0.0"
-Sphinx = "^4.3.2"
-numpydoc = "^1.1.0"
-sphinx-rtd-theme = "^1.0.0"
-sphinx-autoapi = "^1.8.4"
-tox = "^3.24.4"
-ipykernel = "^6.6.0"
-isort = "^5.10.1"
-pydocstyle = "^6.1.1"
-invoke = "^1.6.0"
-nbconvert = "^6.4.0"
+numpydoc = "^1.1"
+pydantic = "^1.8"
+pydocstyle = "^6.1"
+pylint = "^2.12"
+pytest = "^6.2"
+pytest-cov = "^3.0"
+pytest-spec = "^3.2"
+Sphinx = "^4.3"
+sphinx-autoapi = "^1.8"
+sphinx-rtd-theme = "^1.0"
+toml = "^0.10"
+types-invoke = "^1.7"
+types-requests = "^2.28"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+
 # ========================================
 # PYLINT
 # For general linting.
-# > # https://docs.pytest.org/en/latest/customize.html?highlight=pyproject#pyproject-toml
+# > # https://pylint.pycqa.org/en/latest/index.html
 # > https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#pylint
 # ========================================
 [tool.pylint.format]
-max-line-length = "88"
+max-line-length = '90'
 
 [tool.pylint.ini_options]
-testpaths = ["tests"]
-ignore = [".tox", ".direnv", "python_venv"]
+ignore = ['.direnv', 'python_venv']
+
+[tool.pylint.LOGGING]
+disable=['logging-fstring-interpolation']
 
 [tool.pylint.BASIC]
 good-names = [
-  "i",
-  "j",
-  "k",
-  "idx",
-  "jdx",
-  "kdz",
-  "_",
-  "x",
-  "y",
-  "z",
-  "tz",
-  "n",
-  "m",
-  "df",
-  "f",
-  "c",
-  "dt",
+  'i',
+  'j',
+  'k',
+  'idx',
+  'jdx',
+  'kdz',
+  '_',
+  'x',
+  'y',
+  'z',
+  'tz',
+  'n',
+  'm',
+  'df',
+  'f',
+  'c',
+  's',
 ]
 
 [tool.pylint.messages_control]
-disable = "C0330, C0326"
-
+disable = [
+  'C0114', # missing-module-docstring
+  'C0115', # missing-class-docstring
+  'C0116', # missing-function-docstring
+  'R0902', # Too many instance attributes
+  'R0903', # Too few public methods
+  'W0511', # TODO: fixme symbols.
+]
 
 # ========================================
 # MYPY
@@ -87,9 +101,9 @@ disable = "C0330, C0326"
 # > https://pydantic-docs.helpmanual.io/mypy_plugin/#configuring-the-plugin
 # ========================================
 [tool.mypy]
-# plugins = ["pydantic.mypy", "numpy.typing.mypy_plugin"]
+plugins = ['pydantic.mypy', 'numpy.typing.mypy_plugin']
 
-follow_imports = "silent"
+follow_imports = 'silent'
 warn_redundant_casts = true
 warn_unused_ignores = true
 disallow_any_generics = true
@@ -99,33 +113,8 @@ no_implicit_reexport = true
 disallow_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = [
-  "pandas",
-  "st_aggrid",
-  "altair",
-  "diagrams",
-  "mlflow",
-  "matplotlib",
-  "matplotlib.pyplot",
-  "seaborn",
-  "sklearn",
-  "sklearn.metrics",
-  "sklearn.model_selection",
-  "sklearn.datasets",
-  "invoke",
-]
+module = []
 ignore_missing_imports = true
-
-# ========================================
-# PYDANTIC-MYPY
-# > Integrating pydantic into mypy.
-# ========================================
-[tool.pydantic-mypy]
-init_forbid_extra = true
-init_typed = true
-warn_required_dynamic_aliases = true
-warn_untyped_fields = true
-
 
 # ========================================
 # BLACK
@@ -133,9 +122,9 @@ warn_untyped_fields = true
 # ========================================
 [tool.black]
 target-version = ['py39']
+line-length = 90
 include = '\.pyi?$'
 exclude = '''
-
 (
   /(
       \.eggs         # exclude a few common directories in the
@@ -162,24 +151,29 @@ exclude = '''
 
 
 # ========================================
-# TOX
-# > For standardized texting.
-# > https://tox.wiki/en/latest/example/basic.html#pyproject-toml-tox-legacy-ini
+# PYTEST
+# > For general unit and integration testing.
+# > https://docs.pytest.org/en/7.1.x/reference/customize.html#pyproject-toml
+# > https://docs.pytest.org/en/7.1.x/reference/reference.html#command-line-flags
+#
+# The ADDOPTS are as follows:
+#
+# -r chars        show extra test summary info as specified by chars:
+#                 (f)ailed, (E)rror, (s)kipped, (x)failed, (X)passed,
+#                 (p)assed, (P)assed with output, (a)ll except passed
+#                 (p/P), or (A)ll. (w)arnings are enabled by default
+#                 (see --disable-warnings), 'N' can be used to reset
+#                 the list. (default: 'fE').
+#
+# -q, --quiet     decrease verbosity.
+#
 # ========================================
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = py39
-isolated_build = True
-
-[testenv]
-deps =
-  pytest
-  pytest-cov
-
-commands = pytest --cov=pytemplate tests/
-    coverage report -m
-"""
+[tool.pytest.ini_options]
+minversion = '6.0'
+addopts = '-ra -q'
+testpaths = [
+    'tests'
+]
 
 
 # ========================================
@@ -211,24 +205,23 @@ skip = [
 ]
 
 skip_gitignore = true
-line_length = 88
-profile = "black"
+line_length = 90
+profile = 'black'
 
 # ========================================
 # PYDOCSTYLE
 # > For linting docstrings.
 # > http://www.pydocstyle.org/en/stable/usage.html
+# > For matching: https://github.com/PyCQA/pydocstyle/issues/553
 # ========================================
-[pydocstyle]
+[tool.pydocstyle]
 inherit = false
-# ignore = D100
-
-#==========================================
-# NBQA
-# > For notebook linting and styling.
-# > https://nbqa.readthedocs.io/en/latest/configuration.html#configuration
-# =========================================
-[tool.nbqa.addopts]
-flake8 = [
-    "--extend-ignore=E402",  # module level import not at top of file; can't do this in jupyter for these posts.
+match = '((?!test_).)*\.py'
+ignore = [
+  'D100', # Missing docstring in public module.
+  'D104', # Missing docstring in public package.
+  'D107', # Missing docstring in __init__.
+  'D202', # 1 blank line required after docstring.
+  'D203', # 1 blank line required before class docstring.
+  'D212'  # Multi-line docstring summary should start on the first line.
 ]
