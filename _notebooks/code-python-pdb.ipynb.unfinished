@@ -1,0 +1,167 @@
+{
+ "cells": [
+  {
+   "cell_type": "raw",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "title:  \"Debugging in Python: PDB\"\n",
+    "date:   2023-04-21\n",
+    "\n",
+    "classes: wide\n",
+    "\n",
+    "header:\n",
+    "  overlay_filter: rgba(0, 146, 202, 0.8)\n",
+    "  overlay_image: /assets/images/title_beetle.jpg\n",
+    "  caption: \"Photo Credit: <a href=\"https://commons.wikimedia.org/wiki/File:Orange_Blister_Beetle_(Mylabris_pustulata)_on_Ipomoea_carnea_W_IMG_0593.jpg\">J.M.Garg</a>, <a href=\"https://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>, via Wikimedia Commons\n",
+    "---"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Introduction\n",
+    "\n",
+    "The Python debugger has saved me a few times and has cut down on the number of times I needed to make a weird `print` statement to figure out what variable was what value and when.  Let's check out a few things you can do with [`pdb`](https://docs.python.org/3/library/pdb.html).\n",
+    "\n",
+    "The [official documentation](https://docs.python.org/3/library/pdb.html) notes that there are two main ways to use `pdb`: either inline with `import pdb; pdb.set_trace()` or using `breakpoint()`.  \n",
+    "\n",
+    "_As of Python 3.7, `breakpoint()` is a built-in and seems to be preferred over `set_trace()` so we will focus on using `breakpoint()`._"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def weird_divide(a: int, b:int) -> float:\n",
+    "    \"\"\"Divide ``b`` by the sum of ``a`` and ``b``.\"\"\"\n",
+    "    c = a + b\n",
+    "    frac = b / c\n",
+    "    return frac"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's see what happens when we call `weird_divide` with a few different values."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1.0\n",
+      "1.0\n",
+      "-0.0\n"
+     ]
+    },
+    {
+     "ename": "ZeroDivisionError",
+     "evalue": "division by zero",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mZeroDivisionError\u001b[0m                         Traceback (most recent call last)",
+      "Cell \u001b[0;32mIn[10], line 4\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[39mprint\u001b[39m(weird_divide(a\u001b[39m=\u001b[39m\u001b[39m0\u001b[39m, b\u001b[39m=\u001b[39m\u001b[39m2\u001b[39m))\n\u001b[1;32m      3\u001b[0m \u001b[39mprint\u001b[39m(weird_divide(a\u001b[39m=\u001b[39m\u001b[39m-\u001b[39m\u001b[39m1\u001b[39m, b\u001b[39m=\u001b[39m\u001b[39m0\u001b[39m))\n\u001b[0;32m----> 4\u001b[0m \u001b[39mprint\u001b[39m(weird_divide(a\u001b[39m=\u001b[39;49m\u001b[39m-\u001b[39;49m\u001b[39m1\u001b[39;49m, b\u001b[39m=\u001b[39;49m\u001b[39m1\u001b[39;49m))\n",
+      "Cell \u001b[0;32mIn[9], line 4\u001b[0m, in \u001b[0;36mweird_divide\u001b[0;34m(a, b)\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[39m\u001b[39m\u001b[39m\"\"\"Divide ``b`` by the sum of ``a`` and ``b``.\"\"\"\u001b[39;00m\n\u001b[1;32m      3\u001b[0m c \u001b[39m=\u001b[39m a \u001b[39m+\u001b[39m b\n\u001b[0;32m----> 4\u001b[0m frac \u001b[39m=\u001b[39m b \u001b[39m/\u001b[39;49m c\n\u001b[1;32m      5\u001b[0m \u001b[39mreturn\u001b[39;00m frac\n",
+      "\u001b[0;31mZeroDivisionError\u001b[0m: division by zero"
+     ]
+    }
+   ],
+   "source": [
+    "print(weird_divide(a=0, b=1))\n",
+    "print(weird_divide(a=0, b=2))\n",
+    "print(weird_divide(a=-1, b=0))\n",
+    "print(weird_divide(a=-1, b=1))"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Whoops.  There's a divide by zero error.  Let's use `breakpoint()` to see what's up."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# We redefine this function only to illustrate this in the post.\n",
+    "# You can simply paste this into your original function.\n",
+    "\n",
+    "def weird_divide(a: int, b:int) -> float:\n",
+    "    \"\"\"Divide ``b`` by the sum of ``a`` and ``b``.\"\"\"\n",
+    "    breakpoint()\n",
+    "    c = a + b\n",
+    "    frac = b / c\n",
+    "    return frac"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ZeroDivisionError",
+     "evalue": "division by zero",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mZeroDivisionError\u001b[0m                         Traceback (most recent call last)",
+      "Cell \u001b[0;32mIn[12], line 1\u001b[0m\n\u001b[0;32m----> 1\u001b[0m \u001b[39mprint\u001b[39m(weird_divide(a\u001b[39m=\u001b[39;49m\u001b[39m-\u001b[39;49m\u001b[39m1\u001b[39;49m, b\u001b[39m=\u001b[39;49m\u001b[39m1\u001b[39;49m))\n",
+      "Cell \u001b[0;32mIn[11], line 8\u001b[0m, in \u001b[0;36mweird_divide\u001b[0;34m(a, b)\u001b[0m\n\u001b[1;32m      6\u001b[0m \u001b[39mbreakpoint\u001b[39m()\n\u001b[1;32m      7\u001b[0m c \u001b[39m=\u001b[39m a \u001b[39m+\u001b[39m b\n\u001b[0;32m----> 8\u001b[0m frac \u001b[39m=\u001b[39m b \u001b[39m/\u001b[39;49m c\n\u001b[1;32m      9\u001b[0m \u001b[39mreturn\u001b[39;00m frac\n",
+      "\u001b[0;31mZeroDivisionError\u001b[0m: division by zero"
+     ]
+    }
+   ],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "interpreter": {
+   "hash": "409c0ef82ba8b7e64c8e82f82fa10040b189117e3f7cf50921b9ec62b5d5a915"
+  },
+  "kernelspec": {
+   "display_name": "Python 3.9.7 ('blog-Mz1OaUtd-py3.9')",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.6"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
