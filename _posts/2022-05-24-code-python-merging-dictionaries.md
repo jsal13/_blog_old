@@ -2,11 +2,6 @@
 title:  "Merging Dictionaries in Python 3.9"
 date:   2022-05-24
 
-description: Quick and easy method to merge dictionaries in Python 3.9+.
-categories: python linting
-
-excerpt: ""
-
 classes: wide
 
 header:
@@ -34,7 +29,6 @@ dict_2 = {"billy": 23, "beth": 10}
 
 dict_merged = {**dict_1, **dict_2}
 dict_merged
-
 ```
 
 
@@ -60,6 +54,6 @@ dict_merged
     {'jimmy': 1, 'jane': 4, 'billy': 23, 'beth': 10}
 
 
-This feels kind of strange ("Why the 'or' symbol?") unless we think of these more as sets of keys and their associated values: in this case, we are using a legit set union (an "or").
+This feels kind of strange ("Why the 'or' symbol?") unless we think of these more as sets of keys and their associated values: in this case, we are using a legit set union (an "or").  
 
 For more information on this change, see the corresponding [PEP-0584](https://peps.python.org/pep-0584/).

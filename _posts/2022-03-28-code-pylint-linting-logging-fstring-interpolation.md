@@ -2,11 +2,6 @@
 title:  "Linting Tidbit: Pylint and logging-format-interpolation"
 date:   2022-03-28
 
-description: Tidbit about pylint and the logging-format-interpolation.
-categories: python linting
-
-excerpt: "While refactoring some code at work, Pylint produced a warning I found strange..."
-
 classes: wide
 
 header:
@@ -20,7 +15,7 @@ While refactoring some code at work, Pylint produced a warning I found strange:
 
 > Use lazy % formatting in logging functions [logging-fstring-interpolation]
 
-Three things:
+Three things: 
 1. What is the issue?
 2. How serious is it?
 3. How do we fix it?
@@ -105,7 +100,7 @@ Luckily, it does not.
 
 You can do one of two things:
 - Write your logs as above in the Pylint Preferred way, with those %s things.
-- As of [Pylint 2.5](https://pylint.pycqa.org/en/latest/whatsnew/2.5.html?highlight=fstring) there is a method to disable this message.
+- As of [Pylint 2.5](https://pylint.pycqa.org/en/latest/whatsnew/2.5.html?highlight=fstring) there is a method to disable this message.  
 
 For the latter, if you're using a ``pyproject.toml``, you can put the following configuration in the file to disable the warning:
 
@@ -115,3 +110,5 @@ disable=["logging-fstring-interpolation"]
 ```
 
 It is disabled similarly with other configs.
+
+

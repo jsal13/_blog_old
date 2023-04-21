@@ -1,11 +1,6 @@
 ---
-title:  "Quick Altair Snippets: Plotting Low-High Values as Area"
+title:  "Altair Snippets: Plotting low-high values as area"
 date:   2022-01-21
-
-description: Plotting low-high values as areas in Altair.
-categories: python altair dataviz
-
-excerpt: "We're going to make a neat looking plot in Altair: plotting the low-high values of a stock as area."
 
 classes: wide
 
@@ -35,7 +30,7 @@ import pandas as pd
 df = pd.read_csv("../data/sbux.csv", parse_dates=["Date"])
 
 # We'll keep "Open" just in case we need it later.
-cols_to_keep = ['Date', 'Open', 'High', 'Low']
+cols_to_keep = ["Date", "Open", "High", "Low"]
 df = df[cols_to_keep]
 
 # Only use 2020.
@@ -54,10 +49,12 @@ print(df.head(3))
 
 
 ```python
-chart_highlow = alt.Chart(df).mark_area().encode(
-    x="Date:T",
-    y=alt.Y("Low:Q", scale=alt.Scale(zero=False)),
-    y2=alt.Y2("High:Q")
+chart_highlow = (
+    alt.Chart(df)
+    .mark_area()
+    .encode(
+        x="Date:T", y=alt.Y("Low:Q", scale=alt.Scale(zero=False)), y2=alt.Y2("High:Q")
+    )
 )
 chart_highlow
 ```
@@ -137,12 +134,10 @@ df_resampled = df.set_index("Date").resample("W-MON").mean()
 
 chart_highlow = (
     alt.Chart(df_resampled.reset_index())
-        .mark_area()
-        .encode(
-            x="Date:T",
-            y=alt.Y("Low:Q", scale=alt.Scale(zero=False)),
-            y2=alt.Y2("High:Q")
-        )
+    .mark_area()
+    .encode(
+        x="Date:T", y=alt.Y("Low:Q", scale=alt.Scale(zero=False)), y2=alt.Y2("High:Q")
+    )
 )
 
 chart_highlow
@@ -217,22 +212,20 @@ df_resampled = df.set_index("Date").resample("W-MON").mean()
 
 chart_highlow = (
     alt.Chart(df_resampled.reset_index())
-        .mark_area(opacity=0.6)
-        .encode(
-            x="Date:T",
-            y=alt.Y("Low:Q", scale=alt.Scale(zero=False)),
-            y2=alt.Y2("High:Q")
-        )
+    .mark_area(opacity=0.6)
+    .encode(
+        x="Date:T", y=alt.Y("Low:Q", scale=alt.Scale(zero=False)), y2=alt.Y2("High:Q")
+    )
 )
 
 chart_opening = (
-        alt.Chart(df_resampled.reset_index())
-        .mark_line(opacity=0.8, strokeDash=[3,1])
-        .encode(
-            x="Date:T",
-            y=alt.Y("Open:Q", scale=alt.Scale(zero=False)),
-            color=alt.value("red")
-        )
+    alt.Chart(df_resampled.reset_index())
+    .mark_line(opacity=0.8, strokeDash=[3, 1])
+    .encode(
+        x="Date:T",
+        y=alt.Y("Open:Q", scale=alt.Scale(zero=False)),
+        color=alt.value("red"),
+    )
 )
 
 alt.layer(chart_highlow, chart_opening).interactive()
@@ -308,22 +301,20 @@ df_resampled_trimmed = df_resampled.iloc[:8, :]
 
 chart_highlow = (
     alt.Chart(df_resampled_trimmed.reset_index())
-        .mark_area(opacity=0.6)
-        .encode(
-            x="Date:T",
-            y=alt.Y("Low:Q", scale=alt.Scale(zero=False)),
-            y2=alt.Y2("High:Q")
-        )
+    .mark_area(opacity=0.6)
+    .encode(
+        x="Date:T", y=alt.Y("Low:Q", scale=alt.Scale(zero=False)), y2=alt.Y2("High:Q")
+    )
 )
 
 chart_opening = (
-        alt.Chart(df_resampled_trimmed.reset_index())
-        .mark_line(opacity=0.8, strokeDash=[3,1])
-        .encode(
-            x="Date:T",
-            y=alt.Y("Open:Q", scale=alt.Scale(zero=False)),
-            color=alt.value("red")
-        )
+    alt.Chart(df_resampled_trimmed.reset_index())
+    .mark_line(opacity=0.8, strokeDash=[3, 1])
+    .encode(
+        x="Date:T",
+        y=alt.Y("Open:Q", scale=alt.Scale(zero=False)),
+        color=alt.value("red"),
+    )
 )
 
 alt.layer(chart_highlow, chart_opening)
@@ -387,3 +378,5 @@ alt.layer(chart_highlow, chart_opening)
     }
   })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "layer": [{"data": {"name": "data-1f8cc90937ba50ff3e716189679fe229"}, "mark": {"type": "area", "opacity": 0.6}, "encoding": {"x": {"field": "Date", "type": "temporal"}, "y": {"field": "Low", "scale": {"zero": false}, "type": "quantitative"}, "y2": {"field": "High"}}}, {"data": {"name": "data-1f8cc90937ba50ff3e716189679fe229"}, "mark": {"type": "line", "opacity": 0.8, "strokeDash": [3, 1]}, "encoding": {"color": {"value": "red"}, "x": {"field": "Date", "type": "temporal"}, "y": {"field": "Open", "scale": {"zero": false}, "type": "quantitative"}}}], "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-1f8cc90937ba50ff3e716189679fe229": [{"Date": "2020-01-06T00:00:00", "Open": 88.29666933333333, "High": 88.95333333333333, "Low": 87.873334}, {"Date": "2020-01-13T00:00:00", "Open": 89.51400140000001, "High": 90.23000019999999, "Low": 88.96399840000001}, {"Date": "2020-01-20T00:00:00", "Open": 91.7775, "High": 92.46500025, "Low": 91.57499899999999}, {"Date": "2020-01-27T00:00:00", "Open": 92.1039992, "High": 92.955998, "Low": 90.858}, {"Date": "2020-02-03T00:00:00", "Open": 86.70200059999999, "High": 87.3999998, "Low": 85.5199996}, {"Date": "2020-02-10T00:00:00", "Open": 87.172, "High": 88.02799999999999, "Low": 86.178}, {"Date": "2020-02-17T00:00:00", "Open": 88.5625, "High": 89.56250175, "Low": 87.99749925}, {"Date": "2020-02-24T00:00:00", "Open": 88.2240006, "High": 88.920001, "Low": 87.31600180000001}]}}, {"mode": "vega-lite"});
 </script>
+
+

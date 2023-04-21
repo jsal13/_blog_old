@@ -2,12 +2,7 @@
 title:  "From Scratch: Barcodes"
 date:   2021-12-12
 
-description: Building up intuition for Barcodes.
-categories: from_scratch
-
 toc: true
-excerpt: From Scratch is a series where we see how things work by slowly building up to them with simple, basic examples or toy models.  This time, Barcodes.
-
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
   overlay_image: /assets/images/title_barcode.bmp
@@ -17,7 +12,7 @@ header:
 
 Any motivation we come up with to invent our own "toy" version of barcodes will seem somewhat artificial since the original problem that lead to their invention — needing to quickly scan some small part of a package to get price and inventory information — had many potential solutions, and barcodes were, for whatever reason, the solution that stuck around for a while.  It's kind of a strange solution but it's one that worked and sometimes that's all that's needed.
 
-*(An interesting note: it was originally intended for barcodes to be concentric circles instead of bars so they could be read in any direction by a scanner.)*
+**An interesting note**: it was originally intended for barcodes to be concentric circles instead of bars so they could be read in any direction by a scanner.
 
 ## Xs and Os: A Strange and Terrible Encoding
 
@@ -48,7 +43,6 @@ Once we have this, we can represent any sequence containing the numbers 0 to 9. 
 
     xoox oxoo ooox oxoo
     9    4    1    4
-
 
 ## Ink & Warehouse Woes
 

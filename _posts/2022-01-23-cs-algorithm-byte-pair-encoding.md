@@ -2,11 +2,6 @@
 title:  "Byte Pair Encoding: A Byte-Sized Introduction"
 date:   2022-01-23
 
-description: Introduction to the Byte Pair Encoding algorithm.
-categories: python algorithms compression
-
-excerpt: "While going over some Natural Language Processing topics, I stumbled on the _byte pair encoding_ algorithm.  I thought that, given its usefulness in a number of NLP applications, that it'd be fairly complex and quite difficult to understand."
-
 classes: wide
 
 header:
@@ -20,9 +15,9 @@ While going over some Natural Language Processing topics, I stumbled on the _byt
 
 
 ```python
+import random
 import string
 from collections import Counter
-import random
 ```
 
 ## The Problem
@@ -128,10 +123,10 @@ print(f"Original Length: {len(data)}\nCompressed Length: {len(compressed_data)}"
 ```
 
     ZbZYZYZWWZa
-
+    
     No Compression: aaabbaaaaaabbaaaaaabbaaaaaaddaaddaaaaa
     Compression:    ZbZYZYZWWZa
-
+    
     Original Length: 20
     Compressed Length: 11
 
@@ -164,7 +159,7 @@ At some point, we'll need to decode this.  We can do this by looking at our repl
 
 
 ```python
-decompressed_data = compressed_data[::] # Copy data.
+decompressed_data = compressed_data[::]  # Copy data.
 for pair in replacement_mapping[::-1]:
     decompressed_data = replace_byte_pair(decompressed_data, pair[1], pair[0])
 ```

@@ -1,11 +1,6 @@
 ---
-title:  "Using Pipes in Pandas"
+title:  "Using Pipes in Pandas for Fun and Profit"
 date:   2022-04-11
-
-description: A quick introduction to pipes in Pandas.
-categories: python pandas data
-
-excerpt: "One of my pet peeves when looking at data scientist code is how _disorganized_ it tends to be --- my own included!  Because we're experimenting, looking at a variety of data in different ways, and shift+enter-ing in our notebooks like there's no tomorrow, it's difficult to figure out how to make things look organized."
 
 classes: wide
 
@@ -32,7 +27,7 @@ Let's check it out for a toy example.
 
 
 ```python
-import pandas as pd 
+import pandas as pd
 import numpy as np
 ```
 
@@ -51,14 +46,13 @@ def raw_data(size=1000) -> pd.DataFrame:
         "salary": salary,
         "department": department,
         "title": title,
-        "is_employed": is_emplyed
+        "is_employed": is_emplyed,
     }
     return pd.DataFrame(data)
 ```
 
 
 ```python
-
 df_raw = raw_data()
 df_raw.head()
 ```
@@ -154,10 +148,13 @@ Let's try this stuff out!
 ```python
 # Binning the ages.
 
+
 def bin_ages(df: pd.DataFrame) -> str:
     """Bins the col_name column in slices of 10."""
-    cut_bins = [10*i for i in range(10)]  # [0, 10, 20, ...]
-    cut_labels = [f"{cut_bins[idx]} -- {cut_bins[idx + 1]}" for idx in range(len(cut_bins) - 1)]
+    cut_bins = [10 * i for i in range(10)]  # [0, 10, 20, ...]
+    cut_labels = [
+        f"{cut_bins[idx]} -- {cut_bins[idx + 1]}" for idx in range(len(cut_bins) - 1)
+    ]
     df[f"age_binned"] = pd.cut(df["age"], bins=cut_bins, labels=cut_labels)
 
     return df
@@ -257,6 +254,7 @@ Note also that we're **overwriting the original dataframe** in these functions. 
 ```python
 # Salary is an int value.  Note that we're excluding a lot of error-checking
 # for the sake of simplicity here.
+
 
 def parse_salary(df: pd.DataFrame) -> pd.DataFrame:
     """Parses a salary value like $10000 into an int."""
@@ -359,6 +357,7 @@ parse_salary(df_raw).head(5)
 
 ```python
 # Concatenate dept and title with --.
+
 
 def concatenate_dept_and_title(df: pd.DataFrame) -> pd.DataFrame:
     """Concatenates dept and title like "Dept -- Title"."""
@@ -467,8 +466,9 @@ concatenate_dept_and_title(df_raw).head(5)
 
 ```python
 # Converting the employed col to boolean.
-# Note again we're not doing a lot of error checking for 
+# Note again we're not doing a lot of error checking for
 # simplicity; you ought to check that no other values exist here!
+
 
 def convert_employed_to_bool(df: pd.DataFrame) -> pd.DataFrame:
     """Converts employed col to boolean."""
@@ -583,6 +583,7 @@ convert_employed_to_bool(df_raw).head(5)
 
 ```python
 # Dropping all individuals not employed.
+
 
 def drop_not_employed(df: pd.DataFrame) -> pd.DataFrame:
     """Drops all individuals who are not employed."""
@@ -707,8 +708,8 @@ At this point we've got all our functions.  Let's see what they look like in a p
 
 
 ```python
-df_cleaned = (df_raw
-    .pipe(bin_ages)
+df_cleaned = (
+    df_raw.pipe(bin_ages)
     .pipe(parse_salary)
     .pipe(concatenate_dept_and_title)
     .pipe(convert_employed_to_bool)

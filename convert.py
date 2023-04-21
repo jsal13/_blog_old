@@ -1,7 +1,7 @@
-import subprocess
 import re
-from pathlib import Path
+import subprocess
 import sys
+from pathlib import Path
 
 
 def convert_nb_to_md(target_notebook: str) -> None:
@@ -9,7 +9,6 @@ def convert_nb_to_md(target_notebook: str) -> None:
 
     # Read notebook and parse out date and nb name.
     nb_name = Path(target_notebook).stem
-    print("NB NAME IS ", nb_name)
     date_pattern = r"date:.*?(\d{4}-\d{2}-\d{2})"
 
     with open(target_notebook, "r", encoding="utf-8") as f:
@@ -23,6 +22,8 @@ def convert_nb_to_md(target_notebook: str) -> None:
     cmd = [
         "jupyter",
         "nbconvert",
+        "--log-level",
+        "WARN",
         "--to",
         "markdown",
         target_notebook,
@@ -30,7 +31,6 @@ def convert_nb_to_md(target_notebook: str) -> None:
         f"../{md_path}",
     ]
 
-    print(" ".join(cmd))
     subprocess.run(cmd, check=True)
 
     # Convert assets to site-ready assets.
@@ -40,7 +40,13 @@ def convert_nb_to_md(target_notebook: str) -> None:
     nb_asset_pattern = r"!\[\]\(./(assets/images/.*?)\)"
     md_asset_pattern = r"![]({{site.baseurl}}/\1)"
 
-    print(f"All asset replacements: {re.findall(nb_asset_pattern, f_raw_md)}")
+    asset_replacements = re.findall(nb_asset_pattern, f_raw_md)
+
+    if asset_replacements:
+        print(f"> All asset replacements: {asset_replacements}")
+    else:
+        print("> No assets replaced.")
+
     f_raw_md = re.sub(nb_asset_pattern, md_asset_pattern, f_raw_md)
 
     # Re-write results back to md file.

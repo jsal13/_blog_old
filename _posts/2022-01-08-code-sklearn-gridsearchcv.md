@@ -1,11 +1,6 @@
 ---
-title:  "GridSearchCV: What Should My Parameter Be?"
+title:  "What parameters should I be using in my Sklearn Mmdels?: Introducing GridSearchCV."
 date:   2022-01-08
-
-description: The basics of Sklearn grid searching.
-categories: python sklearn datascience data
-
-excerpt: There are many different models to choose from in sklean to model your data with.  There are many parameters and hyper-parameters related to these models.  How can you find the best ones for your data?
 
 classes: wide
 
@@ -16,11 +11,7 @@ header:
 ---
 ## Introduction
 
-There are many different models to choose from in ``sklean`` to model your data with.  There are many parameters and hyper-parameters related to these models.  How can you find the best ones for your data?
-
-The short answer is: _you can't_.
-
-Nevertheless, we can try our best at getting something pretty good.  Below, let's import everything we need.  Don't worry if you don't know what all of this is yet!
+There are many different models to choose from in ``sklean`` to model your data with.  There are many parameters and hyper-parameters related to these models.  How can you find the **best** (or, at least, pretty good) ones for your data?
 
 
 ```python
@@ -32,8 +23,8 @@ from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 ```
 
 ---
@@ -43,7 +34,7 @@ If you were posed this question and you didn't know a whole lot about the ``skle
 
 "For every (hyper)parameter, let's take a list of values to try and ``for``-loop over them all."
 
-That's pretty much hitting the nail on the head. Instead of doing ugly ``for``-loops some number of times (potentially indenting past what your monitor can show!), ``sklean`` has ``GridSearchCV``.
+That's pretty much hitting the nail on the head. Instead of doing ugly ``for``-loops some number of times (potentially indenting past what your monitor can show!), ``sklean`` has ``GridSearchCV``.  
 
 Let's give an example, then chat about it.  If you've not read about [Pipelines](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html), check out [this post](/2021-01-08-sklearn-pipelines-how-to.html).
 
@@ -52,32 +43,23 @@ Let's give an example, then chat about it.  If you've not read about [Pipelines]
 # Sample data, the Sklearn Digits Dataset.
 df_features, df_targets = load_digits(return_X_y=True, as_frame=True)
 x_train, x_test, y_train, y_test = train_test_split(
-    df_features,
-    df_targets,
-    train_size=0.33,
-    random_state=1234
+    df_features, df_targets, train_size=0.33, random_state=1234
 )
 
 # Create our pipelines: Preprocess, Model.
-pipeline_preprocess = Pipeline([
-    ("pca", PCA(n_components=3))
-])
+pipeline_preprocess = Pipeline([("pca", PCA(n_components=3))])
 
-pipeline_model = Pipeline([
-    ("random_forest", RandomForestClassifier(n_estimators=100))
-])
+pipeline_model = Pipeline([("random_forest", RandomForestClassifier(n_estimators=100))])
 
 # Hook up our piplines together and train.
-pipeline_full = Pipeline([
-    ("preprocessing", pipeline_preprocess),
-    ("modeling", pipeline_model)
-])
+pipeline_full = Pipeline(
+    [("preprocessing", pipeline_preprocess), ("modeling", pipeline_model)]
+)
 
 pipeline_full.fit(x_train, y_train)
 
 # Score our model.
 pipeline_full.score(x_test, y_test)
-
 ```
 
 
@@ -100,26 +82,18 @@ While not a perfect model, it gets a respectable accuracy when running with the 
 # Sample data, the Sklearn Digits Dataset.
 df_features, df_targets = load_digits(return_X_y=True, as_frame=True)
 x_train, x_validation, y_train, y_validation = train_test_split(
-    df_features,
-    df_targets,
-    train_size=0.33,
-    random_state=1234
+    df_features, df_targets, train_size=0.33, random_state=1234
 )
 
 # Create our pipelines: Preprocess, Model.
-pipeline_preprocess = Pipeline([
-    ("pca", PCA(n_components=3))
-])
+pipeline_preprocess = Pipeline([("pca", PCA(n_components=3))])
 
-pipeline_model = Pipeline([
-    ("random_forest", RandomForestClassifier(n_estimators=100))
-])
+pipeline_model = Pipeline([("random_forest", RandomForestClassifier(n_estimators=100))])
 
 # Hook up our piplines together and train.
-pipeline_full = Pipeline([
-    ("preprocessing", pipeline_preprocess),
-    ("modeling", pipeline_model)
-])
+pipeline_full = Pipeline(
+    [("preprocessing", pipeline_preprocess), ("modeling", pipeline_model)]
+)
 
 # Parameters we're making a grid of.
 #
@@ -134,14 +108,12 @@ pipeline_full = Pipeline([
 
 param_grid = {
     "modeling__random_forest__n_estimators": [1, 10, 25, 50, 75, 100, 125],
-    "preprocessing__pca__n_components": [1, 5, 10, 15, 20, 25, 30, 35]
+    "preprocessing__pca__n_components": [1, 5, 10, 15, 20, 25, 30, 35],
 }
 
 # NOTE: This takes about a minute.
 grid_search = GridSearchCV(pipeline_full, param_grid)
 grid_search.fit(x_train, y_train)
-
-
 ```
 
 
@@ -198,11 +170,13 @@ When we ran ``GridSearchCV`` above, we took the ``.best_estimator_`` and were do
 
 ```python
 df_grid_search_results = pd.DataFrame(grid_search.cv_results_)
-df_grid_search_results = df_grid_search_results[[
-    "param_modeling__random_forest__n_estimators",
-    "param_preprocessing__pca__n_components",
-    "mean_test_score",
-]]
+df_grid_search_results = df_grid_search_results[
+    [
+        "param_modeling__random_forest__n_estimators",
+        "param_preprocessing__pca__n_components",
+        "mean_test_score",
+    ]
+]
 df_grid_search_results.head(5)
 ```
 
@@ -274,14 +248,13 @@ df_grid_search_results.head(5)
 # Plot these values.
 chart = (
     alt.Chart(df_grid_search_results)
-        .encode(
-            x="param_modeling__random_forest__n_estimators:Q",
-            y="param_preprocessing__pca__n_components",
-            color=alt.Color("mean_test_score", scale=alt.Scale(scheme='redblue'))
-        )
-        .configure_axis(grid=False)
-        .mark_circle()
-
+    .encode(
+        x="param_modeling__random_forest__n_estimators:Q",
+        y="param_preprocessing__pca__n_components",
+        color=alt.Color("mean_test_score", scale=alt.Scale(scheme="redblue")),
+    )
+    .configure_axis(grid=False)
+    .mark_circle()
 )
 chart
 ```
@@ -358,32 +331,27 @@ Let's do one last easy example to solidify this.  We'll use the iris dataset, bu
 ```python
 df_features, df_targets = load_iris(return_X_y=True, as_frame=True)
 x_train, x_validation, y_train, y_validation = train_test_split(
-    df_features,
-    df_targets,
-    train_size=0.15,
-    random_state=1234
+    df_features, df_targets, train_size=0.15, random_state=1234
 )
 
-pipeline_preprocess = Pipeline([
-    ("scaler", StandardScaler()),
-    ("pca", PCA(n_components=3))
-])
+pipeline_preprocess = Pipeline(
+    [("scaler", StandardScaler()), ("pca", PCA(n_components=3))]
+)
 
 # NOTE: Here, we could have used LogisticRegressionCV to grid values for C.
 # Since we're focusing on GridSearchCV, I decided to use the standard LogReg.
-pipeline_model = Pipeline([
-    ("logistic_regression", LogisticRegression(C=1.0, max_iter=1_000))
-])
+pipeline_model = Pipeline(
+    [("logistic_regression", LogisticRegression(C=1.0, max_iter=1_000))]
+)
 
 # Hook up our piplines together and train.
-pipeline_full = Pipeline([
-    ("preprocessing", pipeline_preprocess),
-    ("modeling", pipeline_model)
-])
+pipeline_full = Pipeline(
+    [("preprocessing", pipeline_preprocess), ("modeling", pipeline_model)]
+)
 
 param_grid = {
     "modeling__logistic_regression__C": np.logspace(-4, 2, 10),
-    "preprocessing__pca__n_components": [1, 2, 3, 4]
+    "preprocessing__pca__n_components": [1, 2, 3, 4],
 }
 
 # NOTE: Takes a few seconds.
@@ -412,22 +380,23 @@ grid_search.fit(x_train, y_train)
 
 ```python
 df_grid_search_results = pd.DataFrame(grid_search.cv_results_)
-df_grid_search_results = df_grid_search_results[[
-    "param_modeling__logistic_regression__C",
-    "param_preprocessing__pca__n_components",
-    "mean_test_score",
-]]
+df_grid_search_results = df_grid_search_results[
+    [
+        "param_modeling__logistic_regression__C",
+        "param_preprocessing__pca__n_components",
+        "mean_test_score",
+    ]
+]
 
 chart = (
     alt.Chart(df_grid_search_results)
-        .encode(
-            x="param_modeling__logistic_regression__C:Q",
-            y="param_preprocessing__pca__n_components",
-            color=alt.Color("mean_test_score", scale=alt.Scale(scheme='redblue'))
-        )
-        .configure_axis(grid=False)
-        .mark_circle()
-
+    .encode(
+        x="param_modeling__logistic_regression__C:Q",
+        y="param_preprocessing__pca__n_components",
+        color=alt.Color("mean_test_score", scale=alt.Scale(scheme="redblue")),
+    )
+    .configure_axis(grid=False)
+    .mark_circle()
 )
 chart
 ```

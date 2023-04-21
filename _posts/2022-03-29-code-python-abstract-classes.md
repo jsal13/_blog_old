@@ -2,13 +2,7 @@
 title:  "Abstract Classes In Python"
 date:   2022-03-29
 
-description: A quick introduction to abstract classes.
-categories: python
-
-excerpt: "Abstract Classes may seem like strange beasts that one learns about and promptly forgets, but understanding what they are and when to use them will allow you to structure software in more readable, reliable, and scalable ways."
-
 classes: wide
-
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
   overlay_image: /assets/images/title_contract_abstract_classes.jpg
@@ -22,17 +16,17 @@ For this post, I'm going to take a fairly simplified approach and give an exampl
 
 ## The Sample Problem
 
-Let's say that we've got one database with all of our data on it.  Let's outline a little class for the connector.
+Let's say that we've got one database with all of our data on it.  Let's outline a little class for the connector. 
 
 ```python
 class DBConnector:
     """Connector for our DB."""
 
     def __init__(
-        self,
-        db: Any,
-        host: str,
-        user: str,
+        self, 
+        db: Any, 
+        host: str, 
+        user: str, 
         password: str
     ) -> None:
         """Your amazing docstring goes here."""
@@ -50,9 +44,9 @@ class DBConnector:
 
     def query(self, query: str) -> List[Tuple[str]]:
         """
-        Run the query.
-
-        Note this connection is a mock, you'll have to replace it
+        Run the query.  
+        
+        Note this connection is a mock, you'll have to replace it 
         with whatever connection object you're using.
         """
         conn = self._connect()
@@ -80,11 +74,11 @@ class DBConnector:
     """Connector for our DB."""
 
     def __init__(
-        self,
-        db: Any,
-        host: str,
-        user: str,
-        password: str,
+        self, 
+        db: Any, 
+        host: str, 
+        user: str, 
+        password: str, 
         db_type: str
     ) -> None:
         """Your amazing docstring goes here."""
@@ -96,7 +90,7 @@ class DBConnector:
 
     def _connect(self) -> Any:  # Connection type can go here in place of `Any`
         # Do all of your connection stuff here...
-        if self.db_type == "db_type_1":
+        if self.db_type == "db_type_1":        
             conn = ...
             # ...
             # ...
@@ -112,9 +106,9 @@ class DBConnector:
 
     def query(self, query: str) -> List[Tuple[str]]:
         """
-        Run the query.
-
-        Note this connection is a mock, you'll have to replace
+        Run the query.  
+        
+        Note this connection is a mock, you'll have to replace 
         it with whatever connection object you're using.
         """
         conn = self._connect()
@@ -126,7 +120,7 @@ class DBConnector:
             raise ... #  Raise some kind of error.
 ```
 
-Notice two things.
+Notice two things.  
 
 First, this is not a good looking hunk of code: there's going to be tons of if-else statements depending on how many DBs we need to add.  What if we forgot to add a DB to the "query" part?
 
@@ -215,7 +209,7 @@ class SecondDBConnector(DBConnector):
 
 We now have two connectors that are following our abstract class contract.  What happens if we were to forget to define one of the methods in one of the classes?
 
-Note that it's entirely possible to have "default" methods in the abstract class, so we can cut down on a lot of extra copy-pasting if these DB connectors shared a bunch of methods.
+Note that it's entirely possible to have "default" methods in the abstract class, so we can cut down on a lot of extra copy-pasting if these DB connectors shared a bunch of methods.  
 
 
 ```python
@@ -265,3 +259,4 @@ def my_func(): ...
 ```
 
 Check out some of the other stuff you can do in the [Python docs](https://docs.python.org/3/library/abc.html).
+

@@ -2,11 +2,6 @@
 title:  "Introduction to Timeseries Analysis Methods: ARIMA"
 date:   2022-01-14
 
-description: Intro to ARIMA timeseries modeling.
-categories: python data timeseries
-
-excerpt: "We're going to spend a bit of time talking about a powerful method in timeseries analysis: **ARIMA**.  In order to begin talking about this, we need to cover a few concepts."
-
 classes: wide
 
 header:
@@ -42,35 +37,37 @@ from statsmodels.tsa.arima.model import ARIMA
 def plot_in_altair(df: pd.DataFrame) -> alt.Chart:
     """Plots df vals in altair."""
     # Altair likes long data.
-    df_timeseries_melted = df.melt(
-        value_vars=df.columns,
-        ignore_index=False
-    )
+    df_timeseries_melted = df.melt(value_vars=df.columns, ignore_index=False)
 
     # Create the chart with an optional selection on the legend.
-    selection = alt.selection_multi(fields=["variable"], bind='legend')
+    selection = alt.selection_multi(fields=["variable"], bind="legend")
     chart = (
-        alt.Chart(df_timeseries_melted.reset_index()).mark_line()
-        .encode(x="index:T", y="value", color="variable",
-                opacity=alt.condition(selection, alt.value(1), alt.value(0.2)))
+        alt.Chart(df_timeseries_melted.reset_index())
+        .mark_line()
+        .encode(
+            x="index:T",
+            y="value",
+            color="variable",
+            opacity=alt.condition(selection, alt.value(1), alt.value(0.2)),
+        )
         .add_selection(selection)
     )
     return chart
 
+
 def make_data() -> pd.DataFrame:
     """Creates synthetic data for us to use."""
-    time_domain_1 = pd.date_range('1980-01-01', freq="1m", periods=96)
+    time_domain_1 = pd.date_range("1980-01-01", freq="1m", periods=96)
     values = {
         "data_1": np.sin(np.linspace(0, 1920 * np.pi, 96)),
-        "data_2": np.random.normal(size=96) +
-            np.concatenate([np.linspace(0, 5, 40), np.linspace(5, -5, 20),
-            np.linspace(0, 5, 36)]),
-        "data_3": np.random.normal(size=96)
+        "data_2": np.random.normal(size=96)
+        + np.concatenate(
+            [np.linspace(0, 5, 40), np.linspace(5, -5, 20), np.linspace(0, 5, 36)]
+        ),
+        "data_3": np.random.normal(size=96),
     }
     df_timeseries = pd.DataFrame(values, index=time_domain_1)
     return df_timeseries
-
-
 ```
 
 ## Timeseries, Trend, Seasonality
@@ -148,7 +145,7 @@ plot_in_altair(df)
 You can click on each of the variables in the legend above to show off that plot off (hold shift + click to select multiples).  Let's look at a few of these and see what the deal is.
 
 
-``data_1`` is quite regular: it repeats in a predictable pattern.  This is **seasonality**: the presence of variations that occur at specific regular intervals.
+``data_1`` is quite regular: it repeats in a predictable pattern.  This is **seasonality**: the presence of variations that occur at specific regular intervals.  
 
 ``data_2`` shows something which is similar, but not quite the same: it's rising in a predictable way, but the data is not predictable in the same way as ``data_1``.  This is a behavior which has similar variations as seasonality, but does _not_ occur at regular intervals &mdash; we call behavior like this a **trend**.  The a stock's hourly or daily prices are a good example of a timeseries with a trend: there are rises and falls, but we cannot predict (in the long term) when either will happen.
 
@@ -429,7 +426,7 @@ We follow the literature and say ``ARIMA(p,d,q)`` to mean an ARIMA model with
 - ``d`` is the degree of diff-ing (``d``-diff in our notation),
 - ``q`` is the order of the moving average part (the window size),
 
-With these, check out the [Table 9.1 in this chapter](https://otexts.com/fpp3/non-seasonal-arima.html), notice the special cases.  Make sure you can reason out why these particular values create the associated result.
+With these, check out the [Table 9.1 in this chapter](https://otexts.com/fpp3/non-seasonal-arima.html), notice the special cases.  Make sure you can reason out why these particular values create the associated result.  
 
 For example, taking ``ARIMA(0, 1, 0)`` should result in a random walk.  Why?  Let's look.  We are using no autoregression or moving averages, but we are taking a 1-diff.  As we saw above, this is a way to make our model stationary (similar to white-noise) which is essentially a random walk.
 
@@ -441,7 +438,7 @@ df = make_data()
 df.drop(["data_1", "data_3"], axis=1, inplace=True)
 
 # -- ARIMA --
-arima_model = ARIMA(df, order=(5,1,5))
+arima_model = ARIMA(df, order=(5, 1, 5))
 model_fit = arima_model.fit()
 df["ARIMA(5,1,5)"] = model_fit.predict()
 

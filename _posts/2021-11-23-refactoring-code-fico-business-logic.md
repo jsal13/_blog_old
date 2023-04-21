@@ -2,12 +2,7 @@
 title:  "Refactoring: Code with Business Logic"
 date:   2021-11-23
 
-description: Refactoring some gross sample code!
-categories: refactoring python
-
 toc: true
-excerpt: Refactoring can be difficult and time-consuming, but it is absolutely necessary if one wants to maintain a clean codebase and have code which is easy to read, extend, scale, and share.
-
 header:
   overlay_filter: rgba(0, 146, 202, 0.8)
   overlay_image: /assets/images/title_knot.bmp
@@ -174,7 +169,7 @@ def main(age, fico_score, is_previous_customer):
         'prev_or_new_cust': prev_or_new_cust
     })
 
-	return customer_label
+    return customer_label
 ```
 
 While not perfect, it's certainly cleaner and shorter.  There is one Python-specific thing we've done, which is the "[string format() method](https://docs.python.org/3/tutorial/inputoutput.html#the-string-format-method)" at the bottom.  This formatting allows us to easily create strings and use a dictionary to fill things in (notice the ``**`` which unpacks the dictionary in the ``.format`` method).  If you don't use Python, or don't want to use string formatting like this, it's also easy to add these variables together in an appropriate way once we have them.
@@ -182,7 +177,6 @@ While not perfect, it's certainly cleaner and shorter.  There is one Python-spec
 ## Functions Doing More Than One Thing
 
 This function is doing quite a bit.  It's checking credit rating, if someone is a minor or not, if they're a new or returning customer.  If we had a ton of business logic, this might become much larger and more difficult to debug.  Let's break this up into smaller functions.  While we're at it, let's also _put in [type hints](https://docs.python.org/3/library/typing.html)_,
-
 
 ```python
 # THIRD REFACTOR: FUNCTIONS SHOULD DO ONE THING.
@@ -218,7 +212,7 @@ def main(age: str, fico_score: str, is_previous_customer: str) -> str:
         'prev_or_new_cust': prev_or_new_cust
     })
 
-	return customer_label
+    return customer_label
 ```
 
 In Python, type hints are not required (nor are they checked unless you have [mypy](http://mypy-lang.org/), which I recommend using), but it is important to get into the habit of giving type hints (or, for some other languages, using types when auto-types aren't obvious).  This allows us to see, at a glance, which functions are returning what types of things.
@@ -266,7 +260,7 @@ def main(age: int, fico_score: int, is_previous_customer: bool) -> str:
         'prev_or_new_cust': prev_or_new_cust
     })
 
-	return customer_label
+    return customer_label
 ```
 
 We're being a bit sloppy here with an early return in the ``for``-loop, but we'll fix this soon.  In particular, ``mypy`` won't be happy with that early return, as it's possible the function could return ``None``.

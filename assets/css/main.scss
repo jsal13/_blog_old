@@ -1,0 +1,40 @@
+--- 
+# Only the main Sass file needs front matter (the dashes are enough) 
+--- 
+
+@charset "utf-8";
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+
+/* system typefaces */
+$serif: Lora, Georgia, Times, serif !default;
+$sans-serif: "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial, sans-serif !default;
+$monospace: Monaco, Consolas, "Lucida Console", monospace !default;
+
+/* sans serif typefaces */
+$sans-serif-narrow: $sans-serif !default;
+$helvetica: Helvetica, "Helvetica Neue", Arial, sans-serif !default;
+
+/* serif typefaces */
+$global-font-family : $serif !default;
+$header-font-family : $sans-serif !default;
+$caption-font-family : $serif !default;
+
+
+@import "minimal-mistakes"; // main partials
+
+html {
+    font-size: 14px; // originally 16px
+
+    @include breakpoint($medium) {
+        font-size: 16px; // originally 18px
+    }
+
+    @include breakpoint($large) {
+        font-size: 18px; // originally 20px
+    }
+
+    @include breakpoint($x-large) {
+        font-size: 20px; // originally 22px
+    }
+}

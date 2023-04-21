@@ -1,11 +1,6 @@
 ---
-title:  "Making Your Data Flow With Sklearn Pipelines"
+title:  "Using Sklean Pipelines for Fun and Profit"
 date:   2022-01-06
-
-description: The basics of Sklearn pipelines.
-categories: python sklearn datascience data
-
-excerpt: Sklearn's [pipelines](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) are an elegant way to organize your modeling workflow.  It also provides an "at-a-glance" picture of what is going into the current model &mdash; something your future self will thank you for when you read that notebook back in six months.
 
 classes: wide
 
@@ -14,6 +9,7 @@ header:
   overlay_image: /assets/images/title_pipeline.jpg
   caption: "Photo Credit: [**GordonJ86**](https://commons.wikimedia.org/wiki/File:Orange_and_Yellow_HDPE_Pipe.jpg)"
 ---
+# Making Your Data Flow With Sklearn Pipelines
 
 ## Introduction
 
@@ -22,6 +18,8 @@ Sklearn's [pipelines](https://scikit-learn.org/stable/modules/generated/sklearn.
 ## Getting Toy Data To Play With
 
 Let's import all the libraries we're working with (don't worry if you don't know what some of these do, we'll get to it!) and get some toy data to work with.  We'll be working with the cute [Penguins](https://github.com/allisonhorst/palmerpenguins) dataset which ``seaborn`` can load.
+
+**Note that I will be emphasizing type hints and style quite a bit!**
 
 **Goal**: We'll try to predict the sex, given the rest of the features.
 
@@ -33,15 +31,20 @@ import seaborn as sns
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 ```
 
 
 ```python
-df = sns.load_dataset("penguins")
+# For mypy users, as of 2022-01-08, seaborn does not use typing.
+# We have to wrap the load in `pd.DataFrame` to make mypy
+# understand that it is a dataframe.`
+# See: https://github.com/mwaskom/seaborn/issues/2212
+
+df = pd.DataFrame(sns.load_dataset("penguins"))  # type: ignore
 ```
 
 Great, let's do some quick EDA to see what we're working with.
@@ -252,12 +255,12 @@ df.isna().sum(axis=0)
 
 
 
-For the missing ``sex`` values, let's drop those rows for now, since we're trying to predict on ``sex``.
+For the missing ``sex`` values, let's drop those rows for now, since we're trying to predict on ``sex``.  
 
-If we were to simply do
+If we were to simply do 
 ```python
 df.dropna(subset=["sex"], inplace=True)
-```
+``` 
 in a cell, we might forget that we applied this and get messed up down the line!  Because Jupyter Notebooks are pretty easy to mess up when you've got code in a bunch of different cells, we're going to make a data import function that does basic importing and cleaning.
 
 
@@ -278,28 +281,30 @@ def get_and_clean_penguin_data() -> tuple[pd.DataFrame, pd.Series]:
     df.dropna(subset=["sex"], inplace=True)
 
     # Transform Male/Female into 0/1.
-    targets: pd.Series = (
-        df["sex"].apply(lambda x: 0 if x == "Male" else 1) # type: ignore
-    )
+    targets: pd.Series = df["sex"].apply(
+        lambda x: 0 if x == "Male" else 1
+    )  # type: ignore
 
     return (df.drop("sex", axis=1), targets)
 ```
 
 Great, now let's look at our numeric data.  There's a few things to do:
-
+ 
 - We'd like to impute on the missing values,
 - We'd like to scale these down a bit so everything is nice and normalized.
 
 Let's use a ``Pipeline`` to do this.
 
-A ``Pipeline``will take a list of 2-tuples ``(name, transform)`` where a ``transform`` in Sklean is defined as anything which has implemented the ``fit``/``transform`` methods.
+A ``Pipeline``will take a list of 2-tuples ``(name, transform)`` where a ``transform`` in Sklean is defined as anything which has implemented the ``fit``/``transform`` methods. 
 
 
 ```python
-pipeline_numeric = Pipeline([
-    ("impute_w_mean", SimpleImputer(strategy="mean")),
-    ("scale_normal", StandardScaler())
-])
+pipeline_numeric = Pipeline(
+    [
+        ("impute_w_mean", SimpleImputer(strategy="mean")),
+        ("scale_normal", StandardScaler()),
+    ]
+)
 ```
 
 We note here that the name of the first step of the pipeline is ``impute_w_mean`` and the associated transform is ``SimpleImputer``.  Similarly, ``scale_normal`` is associated to ``StandardScaler``.
@@ -330,16 +335,17 @@ pipeline_numeric.fit_transform(fake_data)
 
 Interesting!  We see here that this replaced our N/A values with whatever the mean was, then normalized our data which sent the mean to 0.  Cool.
 
----
 
 What about the categorical data?  Can we do anything with that?  Since there are only a few islands (3) and a few species (3), we might try ``OneHotEncoder`` and see what we get from that.  Let's make a similar pipeline, imputing with the most frequent value if necessary.
 
 
 ```python
-pipeline_categorical = Pipeline([
-    ("impute_w_most_frequent", SimpleImputer(strategy="most_frequent")),
-    ("one_hot_encode", OneHotEncoder(handle_unknown='ignore', sparse=False))
-])
+pipeline_categorical = Pipeline(
+    [
+        ("impute_w_most_frequent", SimpleImputer(strategy="most_frequent")),
+        ("one_hot_encode", OneHotEncoder(handle_unknown="ignore", sparse=False)),
+    ]
+)
 ```
 
 Let's try this one on some fake data as well.
@@ -364,11 +370,9 @@ pipeline_categorical.fit_transform(fake_data)
 
 Might be a bit harder to tell, but this imputed the missing values as "a", and then converted "a" and "b" to ``[1, 0]`` and ``[0, 1]`` respectively.
 
----
-
 ## Preprocessing: Putting It All Together
 
-So far, we've made our numeric and categorical pipelines for the loaded data. We need to tell Sklearn what pipeline each column should go into.  This is where ``ColumnTransformer`` comes in.  This time, we pass a list of 3-tuples in representing ``(name, pipeline, column names to use)``.
+So far, we've made our numeric and categorical pipelines for the loaded data. We need to tell Sklearn what pipeline each column should go into.  This is where ``ColumnTransformer`` comes in.  This time, we pass a list of 3-tuples in representing ``(name, pipeline, column names to use)``.  
 
 Our preprocessing code, excluding the helper function we made, should look something like this:
 
@@ -376,26 +380,30 @@ Our preprocessing code, excluding the helper function we made, should look somet
 ```python
 # All preprocessing code, excluding helper functions.
 
-pipeline_numeric = Pipeline([
-    ("impute_w_mean", SimpleImputer(strategy="mean")),
-    ("scale_normal", StandardScaler())
-])
+pipeline_numeric = Pipeline(
+    [
+        ("impute_w_mean", SimpleImputer(strategy="mean")),
+        ("scale_normal", StandardScaler()),
+    ]
+)
 
-pipeline_categorical = Pipeline([
-    ("impute_w_most_frequent", SimpleImputer(strategy="most_frequent")),
-    ("one_hot_encode", OneHotEncoder(handle_unknown='ignore', sparse=False))
-])
+pipeline_categorical = Pipeline(
+    [
+        ("impute_w_most_frequent", SimpleImputer(strategy="most_frequent")),
+        ("one_hot_encode", OneHotEncoder(handle_unknown="ignore", sparse=False)),
+    ]
+)
 
-numeric_cols = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']
-categorical_cols = ['species', 'island']
+numeric_cols = ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]
+categorical_cols = ["species", "island"]
 
-preprocessing_transformer = ColumnTransformer([
-    ("numeric", pipeline_numeric, numeric_cols),
-    ("categorical", pipeline_categorical, categorical_cols)
-])
+preprocessing_transformer = ColumnTransformer(
+    [
+        ("numeric", pipeline_numeric, numeric_cols),
+        ("categorical", pipeline_categorical, categorical_cols),
+    ]
+)
 ```
-
----
 
 ## A Simple Model
 
@@ -410,13 +418,10 @@ Because our classifier has a ``fit``/``transform`` method, it can also be pipeli
 
 
 ```python
-preprocess_model_pipeline = Pipeline([
-    ("preprocessing", preprocessing_transformer),
-    ("random_forest_classifier", rf_clf)
-])
+preprocess_model_pipeline = Pipeline(
+    [("preprocessing", preprocessing_transformer), ("random_forest_classifier", rf_clf)]
+)
 ```
-
----
 
 ## Time to Train
 
@@ -429,10 +434,7 @@ At this point, we'll break our original data into a training and test set and pa
 df_features, df_target = get_and_clean_penguin_data()
 
 x_train, x_test, y_train, y_test = train_test_split(
-    df_features,
-    df_target,
-    test_size=0.33,
-    random_state=1234
+    df_features, df_target, test_size=0.33, random_state=1234
 )
 
 pmp = preprocess_model_pipeline.fit(x_train, y_train)
@@ -441,12 +443,14 @@ pmp = preprocess_model_pipeline.fit(x_train, y_train)
 y_predicted = pmp.predict(x_test)
 
 # Score!
-scores = np.array([
-    ("accuracy", accuracy_score(y_test, y_predicted)),
-    ("precision", precision_score(y_test, y_predicted)),
-    ("recall", recall_score(y_test, y_predicted)),
-    ("f1", f1_score(y_test, y_predicted)),
-])
+scores = np.array(
+    [
+        ("accuracy", accuracy_score(y_test, y_predicted)),
+        ("precision", precision_score(y_test, y_predicted)),
+        ("recall", recall_score(y_test, y_predicted)),
+        ("f1", f1_score(y_test, y_predicted)),
+    ]
+)
 df_scores = pd.DataFrame(scores[:, 1], index=scores[:, 0], columns=["value"])
 df_scores
 ```
@@ -500,7 +504,6 @@ df_scores
 
 Not too bad!
 
----
 
 ## The Complete Code.
 
@@ -514,10 +517,10 @@ import seaborn as sns
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 def get_and_clean_penguin_data() -> tuple[pd.DataFrame, pd.Series]:
@@ -536,59 +539,63 @@ def get_and_clean_penguin_data() -> tuple[pd.DataFrame, pd.Series]:
     df.dropna(subset=["sex"], inplace=True)
 
     # Transform Male/Female into 0/1.
-    targets: pd.Series = (
-        df["sex"].apply(lambda x: 0 if x == "Male" else 1) # type: ignore
-    )
+    targets: pd.Series = df["sex"].apply(
+        lambda x: 0 if x == "Male" else 1
+    )  # type: ignore
 
     return (df.drop("sex", axis=1), targets)
 
 
 # PREPROCESSING PIPELINES
-pipeline_numeric = Pipeline([
-    ("impute_w_mean", SimpleImputer(strategy="mean")),
-    ("scale_normal", StandardScaler())
-])
+pipeline_numeric = Pipeline(
+    [
+        ("impute_w_mean", SimpleImputer(strategy="mean")),
+        ("scale_normal", StandardScaler()),
+    ]
+)
 
-pipeline_categorical = Pipeline([
-    ("impute_w_most_frequent", SimpleImputer(strategy="most_frequent")),
-    ("one_hot_encode", OneHotEncoder(handle_unknown='ignore', sparse=False))
-])
+pipeline_categorical = Pipeline(
+    [
+        ("impute_w_most_frequent", SimpleImputer(strategy="most_frequent")),
+        ("one_hot_encode", OneHotEncoder(handle_unknown="ignore", sparse=False)),
+    ]
+)
 
-numeric_cols = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']
-categorical_cols = ['species', 'island']
+numeric_cols = ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]
+categorical_cols = ["species", "island"]
 
-preprocessing_transformer = ColumnTransformer([
-    ("numeric", pipeline_numeric, numeric_cols),
-    ("categorical", pipeline_categorical, categorical_cols)
-])
+preprocessing_transformer = ColumnTransformer(
+    [
+        ("numeric", pipeline_numeric, numeric_cols),
+        ("categorical", pipeline_categorical, categorical_cols),
+    ]
+)
 
 # MODEL PIPELINES
 rf_clf = RandomForestClassifier()
 
-preprocess_model_pipeline = Pipeline([
-    ("preprocessing", preprocessing_transformer),
-    ("random_forest_classifier", rf_clf)
-])
+preprocess_model_pipeline = Pipeline(
+    [("preprocessing", preprocessing_transformer), ("random_forest_classifier", rf_clf)]
+)
 
 # TRAINING AND SCORING
 df_features, df_target = get_and_clean_penguin_data()
 
 x_train, x_test, y_train, y_test = train_test_split(
-    df_features,
-    df_target,
-    test_size=0.33,
-    random_state=1234
+    df_features, df_target, test_size=0.33, random_state=1234
 )
 
 pmp = preprocess_model_pipeline.fit(x_train, y_train)
 y_predicted = pmp.predict(x_test)
 
-scores = np.array([
-    ("accuracy", accuracy_score(y_test, y_predicted)),
-    ("precision", precision_score(y_test, y_predicted)),
-    ("recall", recall_score(y_test, y_predicted)),
-    ("f1", f1_score(y_test, y_predicted)),
-])
+scores = np.array(
+    [
+        ("accuracy", accuracy_score(y_test, y_predicted)),
+        ("precision", precision_score(y_test, y_predicted)),
+        ("recall", recall_score(y_test, y_predicted)),
+        ("f1", f1_score(y_test, y_predicted)),
+    ]
+)
 df_scores = pd.DataFrame(scores[:, 1], index=scores[:, 0], columns=["value"])
 df_scores
 ```
