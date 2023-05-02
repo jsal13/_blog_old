@@ -18,6 +18,7 @@ title_separator: "---"
 subtitle:
 name: "James"
 description: "math & data & python & linting & sundry"
+url: "https://blog.jsalv.com"
 baseurl: "/blog"
 logo: "/assets/images/jsal_standing.png"
 words_per_minute: 200
