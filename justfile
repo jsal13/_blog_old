@@ -4,7 +4,10 @@ set positional-arguments
 default:
     just --list
 
-serve:
+install:
+    bundle install
+
+serve: install
     bundle exec jekyll serve
 
 @lint notebook:

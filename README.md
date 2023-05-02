@@ -1,9 +1,13 @@
-# Blog.
+# Blog
+
 My personal blog.  Math & Data & Python & Sundary.
 
-# Prereqs
+## Prereqs
+
 Install `poetry` and `just`.
+
 - `pip install poetry`
+
 - [Just](https://github.com/casey/just#installation)
 
 Configure Poetry to use in-project virtual environments:
@@ -12,14 +16,13 @@ Configure Poetry to use in-project virtual environments:
 poetry config virtualenvs.in-project true
 ```
 
-Make sure that you initialize the repository with 
+Make sure that you initialize the repository with
 
 ```shell
 poetry install
 ```
 
-# Creating a Post
-
+## Creating a Post
 
 0. Use `poetry shell` to get into a poetry venv.
 1. Create a Jupyter notebook with the entire blog post.
@@ -28,11 +31,6 @@ poetry install
     ```yaml
     title:  "My Cool Title"
     date:   2023-03-21
-
-    description: A cool post about something.
-    categories: python, cool
-
-    excerpt: "Maybe the first sentence..."
 
     classes: wide
 
@@ -51,8 +49,10 @@ poetry install
 
 4. Check the post in `./posts/` for accuracy.
 
-# Running Locally
+## Running Locally
 
-Before pushing your posts, it may be desirable to see if they work locally.
+Before pushing your posts, it may be desirable to see if they work locally:
 
-Follow the steps detailed [here](https://jekyllrb.com/docs/) to set up and bring up the website locally.
+```shell
+just serve
+```
